@@ -1,26 +1,26 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 
-function App() {
+import Header from './components/header/Header';
+import SignInPage from './pages/sign-in/SignInPage';
+import SummaryPage from './pages/summary/SummaryPage';
+import ActivePage from './pages/active/ActivePage';
+import HistoryPage from './pages/history/HistoryPage';
+import SeybrewPage from './pages/seybrew/SeybrewPage';
+
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Router>
+        <Header />
+        <Route exact path="/sign-in" component={SignInPage} />
+        <Route exact path="/" component={SummaryPage} />
+        <Route exact path="/active" component={ActivePage} />
+        <Route exact path="/history" component={HistoryPage} />
+        <Route exact path="/seybrew" component={SeybrewPage} />
+      </Router>
     </div>
   );
-}
+};
 
 export default App;
