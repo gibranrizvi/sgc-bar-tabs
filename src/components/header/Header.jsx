@@ -17,7 +17,9 @@ import {
   MDBIcon
 } from 'mdbreact';
 
-const Header = ({ history }) => {
+import { auth } from '../../firebase/firebase';
+
+const Header = ({ history, currentUser }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const dropdownItemStyles = {
@@ -39,44 +41,55 @@ const Header = ({ history }) => {
           </MDBNavbarBrand>
           <MDBNavbarToggler onClick={onClick} />
           <MDBCollapse id="navbarCollapse3" isOpen={isOpen} navbar>
-            <MDBNavbarNav left>
-              <MDBNavItem active={currentTab === '/'}>
-                <MDBNavLink to="/">Summary</MDBNavLink>
-              </MDBNavItem>
-              <MDBNavItem active={currentTab === '/active'}>
-                <MDBNavLink to="/active">Active</MDBNavLink>
-              </MDBNavItem>
-              <MDBNavItem active={currentTab === '/history'}>
-                <MDBNavLink to="/history">History</MDBNavLink>
-              </MDBNavItem>
-              <MDBNavItem active={currentTab === '/seybrew'}>
-                <MDBNavLink to="/seybrew">Seybrew</MDBNavLink>
-              </MDBNavItem>
-            </MDBNavbarNav>
+            {currentUser && (
+              <MDBNavbarNav left>
+                <MDBNavItem active={currentTab === '/'}>
+                  <MDBNavLink to="/">Summary</MDBNavLink>
+                </MDBNavItem>
+                <MDBNavItem active={currentTab === '/active'}>
+                  <MDBNavLink to="/active">Active</MDBNavLink>
+                </MDBNavItem>
+                <MDBNavItem active={currentTab === '/history'}>
+                  <MDBNavLink to="/history">History</MDBNavLink>
+                </MDBNavItem>
+                <MDBNavItem active={currentTab === '/seybrew'}>
+                  <MDBNavLink to="/seybrew">Seybrew</MDBNavLink>
+                </MDBNavItem>
+              </MDBNavbarNav>
+            )}
             <MDBNavbarNav right>
-              <MDBNavItem>
-                <MDBDropdown>
-                  <MDBDropdownToggle nav caret>
-                    <MDBIcon icon="user" />
-                  </MDBDropdownToggle>
-                  <MDBDropdownMenu className="dropdown-default">
-                    <MDBDropdownItem>
-                      <MDBLink to="/change-password" style={dropdownItemStyles}>
-                        Change Password
-                      </MDBLink>
-                    </MDBDropdownItem>
-                    <MDBDropdownItem>
-                      <MDBLink
-                        to="/sign-in"
-                        onClick={() => console.log('signed out')}
-                        style={dropdownItemStyles}
-                      >
-                        Sign Out
-                      </MDBLink>
-                    </MDBDropdownItem>
-                  </MDBDropdownMenu>
-                </MDBDropdown>
-              </MDBNavItem>
+              {currentUser ? (
+                <MDBNavItem>
+                  <MDBDropdown>
+                    <MDBDropdownToggle nav caret>
+                      <MDBIcon icon="user" />
+                    </MDBDropdownToggle>
+                    <MDBDropdownMenu className="dropdown-default">
+                      <MDBDropdownItem>
+                        <MDBLink
+                          to="/change-password"
+                          style={dropdownItemStyles}
+                        >
+                          Change Password
+                        </MDBLink>
+                      </MDBDropdownItem>
+                      <MDBDropdownItem>
+                        <MDBLink
+                          to="/sign-in"
+                          onClick={() => auth.signOut()}
+                          style={dropdownItemStyles}
+                        >
+                          Sign Out
+                        </MDBLink>
+                      </MDBDropdownItem>
+                    </MDBDropdownMenu>
+                  </MDBDropdown>
+                </MDBNavItem>
+              ) : (
+                <MDBNavItem active={currentTab === '/sign-in'}>
+                  <MDBNavLink to="/sign-in">Sign In</MDBNavLink>
+                </MDBNavItem>
+              )}
             </MDBNavbarNav>
           </MDBCollapse>
         </MDBContainer>

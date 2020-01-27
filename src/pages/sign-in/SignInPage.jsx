@@ -1,13 +1,16 @@
 import React from 'react';
-import { MDBContainer } from 'mdbreact';
+import { MDBContainer, MDBRow } from 'mdbreact';
+import SignInForm from '../../components/sign-in-form/SignInForm';
 
 const SignInPage = () => {
-  const container = { height: 1300 };
-
   return (
     <div>
-      <MDBContainer style={container} className="text-center mt-5 pt-5">
+      <MDBContainer className="text-center mt-5 pt-5">
         <h2>Sign In</h2>
+        <br />
+        <MDBRow>
+          <SignInForm />
+        </MDBRow>
       </MDBContainer>
     </div>
   );
