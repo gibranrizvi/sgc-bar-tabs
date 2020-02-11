@@ -52,7 +52,8 @@ const SignInForm = () => {
             </div>
             <div className="text-center">
               <MDBBtn
-                gradient="purple"
+                rounded
+                gradient="blue"
                 type="submit"
                 size="lg"
                 block

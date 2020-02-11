@@ -45,36 +45,11 @@ const App = () => {
       <Router>
         <Header currentUser={currentUser} />
         <Switch>
-          <Route
-            exact
-            path="/"
-            component={SummaryPage}
-            currentUser={currentUser}
-          />
-          <Route
-            exact
-            path="/sign-in"
-            component={SignInPage}
-            currentUser={currentUser}
-          />
-          <Route
-            exact
-            path="/active"
-            component={ActivePage}
-            currentUser={currentUser}
-          />
-          <Route
-            exact
-            path="/history"
-            component={HistoryPage}
-            currentUser={currentUser}
-          />
-          <Route
-            exact
-            path="/seybrew"
-            component={SeybrewPage}
-            currentUser={currentUser}
-          />
+          <Route exact path="/" component={SummaryPage} />
+          <Route exact path="/sign-in" component={SignInPage} />
+          <Route exact path="/active" component={ActivePage} />
+          <Route exact path="/history" component={HistoryPage} />
+          <Route exact path="/seybrew" component={SeybrewPage} />
         </Switch>
       </Router>
       <Footer />

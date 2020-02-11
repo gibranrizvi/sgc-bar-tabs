@@ -3,7 +3,7 @@ import { MDBContainer, MDBRow, MDBCol, MDBBtn, MDBIcon } from 'mdbreact';
 
 import './summary-page.css';
 
-const SummaryPage = () => {
+const SummaryPage = ({ currentUser, history }) => {
   return (
     <div className="Summary">
       <MDBContainer className="text-center mt-5 pt-5">
@@ -13,10 +13,7 @@ const SummaryPage = () => {
             <MDBCol md="8" className="mb-4"></MDBCol>
             <MDBCol md="4" className="mb-4">
               <MDBBtn size="lg" gradient="purple" rounded>
-                <MDBIcon icon="plus" />
-              </MDBBtn>
-              <MDBBtn size="lg" gradient="blue" rounded>
-                <MDBIcon icon="plus" />
+                <MDBIcon icon="plus" /> New Order
               </MDBBtn>
             </MDBCol>
           </MDBRow>

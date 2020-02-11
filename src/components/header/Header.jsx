@@ -86,7 +86,7 @@ const Header = ({ history, currentUser }) => {
                   </MDBDropdown>
                 </MDBNavItem>
               ) : (
-                <MDBNavItem active={currentTab === '/sign-in'}>
+                <MDBNavItem>
                   <MDBNavLink to="/sign-in">Sign In</MDBNavLink>
                 </MDBNavItem>
               )}
