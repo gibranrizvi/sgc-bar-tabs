@@ -1,14 +1,14 @@
 import React from 'react';
 import { MDBContainer } from 'mdbreact';
 
-const HistoryPage = () => {
+const CustomersPage = () => {
   return (
     <div>
       <MDBContainer className="text-center mt-5 pt-5">
-        <h2>History</h2>
+        <h2>Customers</h2>
       </MDBContainer>
     </div>
   );
 };
 
-export default HistoryPage;
+export default CustomersPage;

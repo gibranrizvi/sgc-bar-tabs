@@ -46,14 +46,17 @@ const Header = ({ history, currentUser }) => {
                 <MDBNavItem active={currentTab === '/'}>
                   <MDBNavLink to="/">Summary</MDBNavLink>
                 </MDBNavItem>
-                <MDBNavItem active={currentTab === '/active'}>
-                  <MDBNavLink to="/active">Active</MDBNavLink>
+                <MDBNavItem active={currentTab === '/orders'}>
+                  <MDBNavLink to="/orders">Orders</MDBNavLink>
                 </MDBNavItem>
-                <MDBNavItem active={currentTab === '/history'}>
-                  <MDBNavLink to="/history">History</MDBNavLink>
+                <MDBNavItem active={currentTab === '/active'}>
+                  <MDBNavLink to="/active">Active Tabs</MDBNavLink>
+                </MDBNavItem>
+                <MDBNavItem active={currentTab === '/customers'}>
+                  <MDBNavLink to="/customers">Customers</MDBNavLink>
                 </MDBNavItem>
                 <MDBNavItem active={currentTab === '/seybrew'}>
-                  <MDBNavLink to="/seybrew">Seybrew</MDBNavLink>
+                  <MDBNavLink to="/seybrew">Seybrew Tabs</MDBNavLink>
                 </MDBNavItem>
               </MDBNavbarNav>
             )}

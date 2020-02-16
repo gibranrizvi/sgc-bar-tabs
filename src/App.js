@@ -9,7 +9,7 @@ import Footer from './components/footer/Footer';
 import SignInPage from './pages/sign-in/SignInPage';
 import SummaryPage from './pages/summary/SummaryPage';
 import ActivePage from './pages/active/ActivePage';
-import HistoryPage from './pages/history/HistoryPage';
+import CustomersPage from './pages/customers/CustomersPage';
 import SeybrewPage from './pages/seybrew/SeybrewPage';
 
 const App = () => {
@@ -48,7 +48,7 @@ const App = () => {
           <Route exact path="/" component={SummaryPage} />
           <Route exact path="/sign-in" component={SignInPage} />
           <Route exact path="/active" component={ActivePage} />
-          <Route exact path="/history" component={HistoryPage} />
+          <Route exact path="/customers" component={CustomersPage} />
           <Route exact path="/seybrew" component={SeybrewPage} />
         </Switch>
       </Router>
