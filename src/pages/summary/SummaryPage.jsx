@@ -23,10 +23,10 @@ const SummaryPage = ({ history }) => {
       <MDBContainer className="text-center mt-5 pt-5">
         <h2>Summary</h2>
         <MDBRow className="mt-5 mb-3 text-center">
-          <MDBCol md="4" className="z">
+          <MDBCol md="4" className="mb-2">
             <NewOrderModal currentUser={currentUser} />
           </MDBCol>
-          <MDBCol md="4">
+          <MDBCol md="4" className="mb-2">
             <MDBBtn
               block
               size="lg"
@@ -37,7 +37,7 @@ const SummaryPage = ({ history }) => {
               <MDBIcon icon="beer" className="pr-2" /> Add Seybrews
             </MDBBtn>
           </MDBCol>
-          <MDBCol md="4" className="z">
+          <MDBCol md="4" className="mb-2">
             <RegisterFormModal currentUser={currentUser} />
           </MDBCol>
         </MDBRow>
@@ -47,6 +47,7 @@ const SummaryPage = ({ history }) => {
             {/* Recent orders table */}
             <div>
               <h5>Recent orders</h5>
+              <Link to="#">View More</Link>
               <RecentOrdersTable />
             </div>
           </MDBCol>

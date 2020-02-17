@@ -11,7 +11,7 @@ import {
   MDBBadge
 } from 'mdbreact';
 
-import { FirebaseContext } from '../../firebase/firebase';
+import { createOrderDocument, FirebaseContext } from '../../firebase/firebase';
 import beverageList from '../../beverage-list/beverageList';
 
 const NewOrderModal = ({ currentUser }) => {
@@ -27,26 +27,27 @@ const NewOrderModal = ({ currentUser }) => {
 
   const [errors, setErrors] = React.useState({});
 
+  React.useEffect(() => {
+    const sum = getTotal();
+    setTotal(sum);
+  }, [order]);
+
   const toggle = () => setModalOpen(prev => !prev);
 
   const handleSubmit = async event => {
     event.preventDefault();
 
-    // Validation
-
     setSubmitting(true);
-
-    setErrors({});
 
     try {
       const orderData = {
         customer,
-        total,
         order,
+        total,
         createdBy: currentUser
       };
 
-      // await createOrderDocument(orderData);
+      await createOrderDocument(orderData);
 
       setSubmitting(false);
 
@@ -144,14 +145,28 @@ const NewOrderModal = ({ currentUser }) => {
       <MDBListGroupItem
         key={item.id}
         hover
-        className="d-flex justify-content-between align-items-center pointer"
+        className="d-flex justify-content-between align-items-center"
       >
-        {item.name} - SR {item.price}.00
-        <MDBIcon
-          className="pointer"
-          icon="times"
-          onClick={() => removeBeverage(item)}
-        />
+        {item.name} - SR {item.price}.00 x {item.count}
+        <div>
+          {item.count > 1 && (
+            <MDBIcon
+              className="mr-3 pointer"
+              icon="minus"
+              onClick={() => decreaseCount(item)}
+            />
+          )}
+          <MDBIcon
+            className="mr-3 pointer"
+            icon="plus"
+            onClick={() => increaseCount(item)}
+          />
+          <MDBIcon
+            className="pointer"
+            icon="times"
+            onClick={() => removeBeverage(item)}
+          />
+        </div>
       </MDBListGroupItem>
     ));
   };
@@ -168,6 +183,39 @@ const NewOrderModal = ({ currentUser }) => {
 
   const getAvailableBeverages = () =>
     beverageList.filter(({ id }) => !order.some(item => id === item.id));
+
+  const getTotal = () => {
+    let sum = 0;
+    let i = 0;
+    for (i = 0; i < order.length; i++) {
+      sum = sum + order[i].count * order[i].price;
+    }
+    return sum;
+  };
+
+  const increaseCount = item => {
+    const updatedItem = { ...item, count: item.count + 1 };
+    let updatedOrder = [];
+
+    for (let i = 0; i < order.length; i++) {
+      if (order[i].id === item.id) {
+        updatedOrder.push(updatedItem);
+      } else updatedOrder.push(order[i]);
+    }
+    return setOrder(updatedOrder);
+  };
+
+  const decreaseCount = item => {
+    const updatedItem = { ...item, count: item.count - 1 };
+    let updatedOrder = [];
+
+    for (let i = 0; i < order.length; i++) {
+      if (order[i].id === item.id) {
+        updatedOrder.push(updatedItem);
+      } else updatedOrder.push(order[i]);
+    }
+    return setOrder(updatedOrder);
+  };
 
   return (
     <>
@@ -204,12 +252,19 @@ const NewOrderModal = ({ currentUser }) => {
             <p className="text-center">Current Order</p>
             {renderOrder()}
             <hr />
+
+            {/* Order creation */}
+            <p>Order Total: SR {total}.00</p>
           </MDBModalBody>
           <MDBModalFooter>
             <MDBBtn gradient="peach" onClick={toggle}>
               Cancel
             </MDBBtn>
-            <MDBBtn type="submit" gradient="blue">
+            <MDBBtn
+              type="submit"
+              gradient="blue"
+              disabled={!customer || order.length === 0}
+            >
               {submitting ? (
                 <div className="spinner-border spinner-border-sm" role="status">
                   <span className="sr-only">Submitting...</span>
