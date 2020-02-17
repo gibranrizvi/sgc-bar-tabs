@@ -124,7 +124,7 @@ const Header = ({ history, currentUser }) => {
                         </MDBDropdownItem>
                         <MDBDropdownItem>
                           <MDBLink
-                            to="/sign-in"
+                            to="#"
                             onClick={() => auth.signOut()}
                             style={dropdownItemStyles}
                           >

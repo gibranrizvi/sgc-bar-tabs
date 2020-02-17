@@ -2,9 +2,17 @@ import React from 'react';
 import { MDBContainer, MDBRow, MDBCol, MDBBtn, MDBIcon } from 'mdbreact';
 import { Link } from 'react-router-dom';
 
-import './summary-page.css';
+import FirebaseContext from '../../firebase/context';
 
-const SummaryPage = ({ currentUser, history }) => {
+const SummaryPage = ({ history }) => {
+  const { currentUser } = React.useContext(FirebaseContext);
+
+  React.useEffect(() => {
+    if (!currentUser) {
+      history.push('/sign-in');
+    }
+  }, [currentUser, history]);
+
   return (
     <div className="Summary">
       <MDBContainer className="text-center mt-5 pt-5">

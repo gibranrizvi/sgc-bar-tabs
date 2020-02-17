@@ -1,8 +1,22 @@
 import React from 'react';
 import { MDBContainer } from 'mdbreact';
+
 import SignInForm from '../../components/sign-in-form/SignInForm';
 
-const SignInPage = ({ currentUser, history }) => {
+import FirebaseContext from '../../firebase/context';
+
+const SignInPage = ({ history }) => {
+  const { currentUser } = React.useContext(FirebaseContext);
+
+  React.useEffect(() => {
+    if (currentUser) {
+      history.push('/');
+    } else {
+      // TODO uncomment this
+      history.push('/sign-in');
+    }
+  }, [currentUser, history]);
+
   return (
     <div className="SignIn">
       <MDBContainer className="text-center mt-5 pt-5">

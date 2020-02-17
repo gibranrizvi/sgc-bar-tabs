@@ -2,7 +2,6 @@ import React from 'react';
 import { MDBContainer, MDBRow, MDBCol, MDBInput, MDBBtn } from 'mdbreact';
 
 import {
-  auth,
   createNewUser,
   createUserProfileDocument
 } from '../../firebase/firebase';
@@ -10,8 +9,7 @@ import {
 const RegisterForm = ({ currentUser, history }) => {
   const [values, setValues] = React.useState({
     displayName: '',
-    handle: '',
-    role: 'customer',
+    role: 'customer', // TODO Hard-coded for now
     telephone: '',
     email: '',
     password: '',
@@ -21,7 +19,6 @@ const RegisterForm = ({ currentUser, history }) => {
 
   const {
     displayName,
-    handle,
     role,
     telephone,
     email,
@@ -68,6 +65,16 @@ const RegisterForm = ({ currentUser, history }) => {
 
     setErrors({});
 
+    const formattedName = displayName
+      .trim()
+      .toLowerCase()
+      .split(' ')
+      .map(word => word.charAt(0).toUpperCase() + word.substring(1))
+      .join(' ');
+    const handle = displayName
+      .toLowerCase()
+      .trim()
+      .replace(' ', '-');
     const formattedEmail = email ? email : handle + '@sgcbar.com';
 
     try {
@@ -77,11 +84,12 @@ const RegisterForm = ({ currentUser, history }) => {
 
       const userData = {
         uid,
-        displayName,
+        displayName: formattedName,
         handle,
-        role: role.toLowerCase(),
+        role,
+        telephone,
         email,
-        created_by: currentUser
+        createdBy: currentUser
       };
 
       await createUserProfileDocument(userData);
@@ -95,14 +103,12 @@ const RegisterForm = ({ currentUser, history }) => {
     }
   };
 
-  console.log(errors);
-
   return (
     <MDBContainer>
       <MDBRow>
         <MDBCol md="3"></MDBCol>
         <MDBCol md="6">
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} noValidate>
             <div className="grey-text">
               <MDBInput
                 label="Name"
@@ -116,10 +122,9 @@ const RegisterForm = ({ currentUser, history }) => {
                   })
                 }
                 outline
-                style={errors.displayName && { border: '1px solid #ff4444' }}
               >
                 {errors.displayName && (
-                  <p className="text-left" style={{ color: '#ff4444' }}>
+                  <p className="text-left" style={{ color: 'red' }}>
                     {errors.displayName}
                   </p>
                 )}
@@ -133,7 +138,13 @@ const RegisterForm = ({ currentUser, history }) => {
                   setValues({ ...values, telephone: target.value })
                 }
                 outline
-              />
+              >
+                {errors.telephone && (
+                  <p className="text-left" style={{ color: 'red' }}>
+                    {errors.telephone}
+                  </p>
+                )}
+              </MDBInput>
               <p>Role is customer</p>
               <MDBInput
                 label="Email"
@@ -144,7 +155,13 @@ const RegisterForm = ({ currentUser, history }) => {
                   setValues({ ...values, email: target.value })
                 }
                 outline
-              />
+              >
+                {errors.email && (
+                  <p className="text-left" style={{ color: 'red' }}>
+                    {errors.email}
+                  </p>
+                )}
+              </MDBInput>
               <MDBInput
                 label="Password"
                 size="lg"
@@ -154,9 +171,14 @@ const RegisterForm = ({ currentUser, history }) => {
                   setValues({ ...values, password: target.value })
                 }
                 outline
-              />
+              >
+                {errors.password && (
+                  <p className="text-left" style={{ color: 'red' }}>
+                    {errors.password}
+                  </p>
+                )}
+              </MDBInput>
               <MDBInput
-                style={{ marginBottom: 36 }}
                 label="Confirm Password"
                 size="lg"
                 type="password"
@@ -165,7 +187,13 @@ const RegisterForm = ({ currentUser, history }) => {
                   setValues({ ...values, confirmPassword: target.value })
                 }
                 outline
-              />
+              >
+                {errors.confirmPassword && (
+                  <p className="text-left" style={{ color: 'red' }}>
+                    {errors.confirmPassword}
+                  </p>
+                )}
+              </MDBInput>
             </div>
             <div className="text-center">
               <MDBBtn
