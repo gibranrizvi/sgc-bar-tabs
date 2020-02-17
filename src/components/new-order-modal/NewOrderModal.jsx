@@ -123,7 +123,7 @@ const NewOrderModal = ({ currentUser }) => {
       return filteredBeverages.map(item => (
         <MDBListGroupItem
           key={item.id}
-          onClick={() => updateBeverageLists(item)}
+          onClick={() => addBeverage(item)}
           hover
           className="d-flex justify-content-left align-items-center pointer"
         >
@@ -141,7 +141,7 @@ const NewOrderModal = ({ currentUser }) => {
           color="primary"
           pill
           className="mr-1 pointer"
-          onClick={() => updateBeverageLists(item)}
+          onClick={() => addBeverage(item)}
         >
           {item.name}
         </MDBBadge>
@@ -154,14 +154,21 @@ const NewOrderModal = ({ currentUser }) => {
       <MDBListGroupItem
         key={id}
         hover
-        className="d-flex justify-content-left align-items-center pointer"
+        className="d-flex justify-content-between align-items-center pointer"
       >
         {name} - SR {price}.00
+        <MDBIcon
+          className="pointer"
+          icon="times"
+          onClick={() => {
+            return setValues({ ...values });
+          }}
+        />
       </MDBListGroupItem>
     ));
   };
 
-  const updateBeverageLists = item => {
+  const addBeverage = item => {
     const newBeverageList = [...addedBeverages, { ...item, count: 1 }];
     setAddedBeverages(newBeverageList);
     setValues({ ...values, order: addedBeverages });
