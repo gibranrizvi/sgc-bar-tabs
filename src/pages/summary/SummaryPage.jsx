@@ -21,9 +21,10 @@ const SummaryPage = ({ history }) => {
     <div className="Summary">
       <MDBContainer className="text-center mt-5 pt-5">
         <h2>Summary</h2>
-        <MDBRow className="mt-4 text-center">
-          <MDBCol md="12" className="mb-4">
+        <MDBRow className="mt-5 mb-3 text-center">
+          <MDBCol md="4" className="z">
             <MDBBtn
+              block
               size="lg"
               gradient="peach"
               rounded
@@ -31,7 +32,10 @@ const SummaryPage = ({ history }) => {
             >
               <MDBIcon icon="plus" className="pr-2" /> New Order
             </MDBBtn>
+          </MDBCol>
+          <MDBCol md="4" className="z">
             <MDBBtn
+              block
               size="lg"
               gradient="blue"
               rounded
@@ -39,14 +43,16 @@ const SummaryPage = ({ history }) => {
             >
               <MDBIcon icon="beer" className="pr-2" /> Add Seybrews
             </MDBBtn>
-            <RegisterFormModal />
+          </MDBCol>
+          <MDBCol md="4" className="z">
+            <RegisterFormModal currentUser={currentUser} />
           </MDBCol>
         </MDBRow>
 
         <MDBRow>
           <MDBCol md="6" className="my-2">
             {/* Recent orders table */}
-            <div className="w-responsive mx-auto">
+            <div>
               <h5>Recent orders</h5>
               <Link to="/orders">View All</Link>
               <RecentOrdersTable />
@@ -54,7 +60,7 @@ const SummaryPage = ({ history }) => {
           </MDBCol>
           <MDBCol md="6" className="my-2">
             {/* Overdue tabs table */}
-            <div className="w-responsive mx-auto">
+            <div>
               <h5>Overdue tabs</h5>
               <Link to="/active">View All</Link>
               <ActiveTabsTable />
@@ -62,7 +68,7 @@ const SummaryPage = ({ history }) => {
           </MDBCol>
           <MDBCol md="6" className="my-2">
             {/* Seybrew tabs table */}
-            <div className="w-responsive mx-auto">
+            <div>
               <h5>Seybrew tabs</h5>
               <Link to="/seybrew">View All</Link>
               <SeybrewTabsTable />
@@ -70,7 +76,7 @@ const SummaryPage = ({ history }) => {
           </MDBCol>
           <MDBCol md="6" className="my-2">
             {/* Active tabs table */}
-            <div className="w-responsive mx-auto">
+            <div>
               <h5>Active tabs</h5>
               <Link to="/active">View All</Link>
               <ActiveTabsTable />

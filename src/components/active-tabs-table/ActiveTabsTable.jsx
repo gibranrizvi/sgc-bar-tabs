@@ -9,8 +9,8 @@ const ActiveTabsTable = () => {
           <tr>
             <th>Name</th>
             <th>Amount</th>
-            <th>Start Date</th>
-            <th>Due Date</th>
+            <th>Start</th>
+            <th>Due</th>
             <th>Actions</th>
           </tr>
         </MDBTableHead>

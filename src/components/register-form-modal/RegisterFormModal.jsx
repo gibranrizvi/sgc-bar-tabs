@@ -1,8 +1,5 @@
 import React from 'react';
 import {
-  MDBContainer,
-  MDBRow,
-  MDBCol,
   MDBInput,
   MDBBtn,
   MDBIcon,
@@ -19,7 +16,7 @@ import {
 
 const RegisterFormModal = ({ currentUser, history }) => {
   const [modalOpen, setModalOpen] = React.useState(false);
-
+  const [submitting, setSubmitting] = React.useState(false);
   const [values, setValues] = React.useState({
     displayName: '',
     role: 'customer', // TODO Hard-coded for now
@@ -39,6 +36,8 @@ const RegisterFormModal = ({ currentUser, history }) => {
     confirmPassword
   } = values;
 
+  const toggle = () => setModalOpen(prev => !prev);
+
   const handleSubmit = async event => {
     event.preventDefault();
 
@@ -56,6 +55,11 @@ const RegisterFormModal = ({ currentUser, history }) => {
         ...errors,
         telephone: '',
         password: 'Password is required'
+      });
+    } else if (password.length < 6) {
+      return setErrors({
+        ...errors,
+        password: 'Password must be at least 6 characters'
       });
     } else if (!confirmPassword) {
       return setErrors({
@@ -75,6 +79,8 @@ const RegisterFormModal = ({ currentUser, history }) => {
     ) {
       return setErrors({ email: 'Email is invalid' });
     }
+
+    setSubmitting(true);
 
     setErrors({});
 
@@ -107,20 +113,27 @@ const RegisterFormModal = ({ currentUser, history }) => {
 
       await createUserProfileDocument(userData);
 
-      return history.push('/');
+      setSubmitting(false);
+      setValues({
+        displayName: '',
+        telephone: '',
+        email: '',
+        password: '',
+        confirmPassword: ''
+      });
+      return toggle();
     } catch (error) {
       console.log(error);
+      setSubmitting(false);
       return setErrors({
         email: 'Email is already in use'
       });
     }
   };
 
-  const toggle = () => setModalOpen(prev => !prev);
-
   return (
     <>
-      <MDBBtn size="lg" gradient="purple" rounded onClick={toggle}>
+      <MDBBtn block size="lg" gradient="purple" rounded onClick={toggle}>
         <MDBIcon icon="user" className="pr-2" /> New Customer
       </MDBBtn>
       <MDBModal isOpen={modalOpen} toggle={toggle} fullHeight position="left">
@@ -141,7 +154,10 @@ const RegisterFormModal = ({ currentUser, history }) => {
                 outline
               >
                 {errors.displayName && (
-                  <p className="text-left" style={{ color: 'red' }}>
+                  <p
+                    className="text-left"
+                    style={{ color: 'red', fontSize: 12 }}
+                  >
                     {errors.displayName}
                   </p>
                 )}
@@ -156,7 +172,10 @@ const RegisterFormModal = ({ currentUser, history }) => {
                 outline
               >
                 {errors.telephone && (
-                  <p className="text-left" style={{ color: 'red' }}>
+                  <p
+                    className="text-left"
+                    style={{ color: 'red', fontSize: 12 }}
+                  >
                     {errors.telephone}
                   </p>
                 )}
@@ -172,7 +191,10 @@ const RegisterFormModal = ({ currentUser, history }) => {
                 outline
               >
                 {errors.email && (
-                  <p className="text-left" style={{ color: 'red' }}>
+                  <p
+                    className="text-left"
+                    style={{ color: 'red', fontSize: 12 }}
+                  >
                     {errors.email}
                   </p>
                 )}
@@ -187,7 +209,10 @@ const RegisterFormModal = ({ currentUser, history }) => {
                 outline
               >
                 {errors.password && (
-                  <p className="text-left" style={{ color: 'red' }}>
+                  <p
+                    className="text-left"
+                    style={{ color: 'red', fontSize: 12 }}
+                  >
                     {errors.password}
                   </p>
                 )}
@@ -202,7 +227,10 @@ const RegisterFormModal = ({ currentUser, history }) => {
                 outline
               >
                 {errors.confirmPassword && (
-                  <p className="text-left" style={{ color: 'red' }}>
+                  <p
+                    className="text-left"
+                    style={{ color: 'red', fontSize: 12 }}
+                  >
                     {errors.confirmPassword}
                   </p>
                 )}
@@ -214,7 +242,13 @@ const RegisterFormModal = ({ currentUser, history }) => {
               Cancel
             </MDBBtn>
             <MDBBtn type="submit" gradient="blue">
-              Register
+              {submitting ? (
+                <div className="spinner-border spinner-border-sm" role="status">
+                  <span className="sr-only">Submitting...</span>
+                </div>
+              ) : (
+                'Register'
+              )}
             </MDBBtn>
           </MDBModalFooter>
         </form>
