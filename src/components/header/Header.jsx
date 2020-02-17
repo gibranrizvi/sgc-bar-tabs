@@ -38,7 +38,7 @@ const Header = ({ history, currentUser }) => {
     <header>
       <MDBNavbar color="blue-gradient" dark expand="md" scrolling fixed="top">
         <MDBContainer>
-          <MDBNavbarBrand>
+          <MDBNavbarBrand onClick={() => history.push('/')} className="pointer">
             <strong className="white-text">SGC Bar Tabs</strong>
           </MDBNavbarBrand>
           <MDBNavbarToggler onClick={onClick} />

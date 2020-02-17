@@ -1,16 +1,16 @@
 import React from 'react';
 import { MDBTable, MDBTableBody, MDBTableHead } from 'mdbreact';
 
-const RecentOrdersTable = () => {
+const ActiveTabsTable = () => {
   return (
     <div className="recent-orders-table mt-3">
       <MDBTable small hover responsive striped fixed>
-        <MDBTableHead color="peach-gradient" textWhite>
+        <MDBTableHead color="purple-gradient" textWhite>
           <tr>
             <th>Name</th>
-            <th>Total</th>
-            <th>Time</th>
-            <th>Date</th>
+            <th>Amount</th>
+            <th>Start Date</th>
+            <th>Due Date</th>
             <th>Actions</th>
           </tr>
         </MDBTableHead>
@@ -42,4 +42,4 @@ const RecentOrdersTable = () => {
   );
 };
 
-export default RecentOrdersTable;
+export default ActiveTabsTable;

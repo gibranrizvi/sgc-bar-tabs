@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 
 import FirebaseContext from '../../firebase/context';
 import RecentOrdersTable from '../../components/recent-orders-table/RecentOrdersTable';
+import ActiveTabsTable from '../../components/active-tabs-table/ActiveTabsTable';
+import SeybrewTabsTable from '../../components/seybrew-tabs-table/SeybrewTabsTable';
 
 const SummaryPage = ({ history }) => {
   const { currentUser } = React.useContext(FirebaseContext);
@@ -47,11 +49,11 @@ const SummaryPage = ({ history }) => {
             </div>
           </MDBCol>
           <MDBCol md="6" className="my-2">
-            {/* Active tabs table */}
+            {/* Overdue tabs table */}
             <div className="w-responsive mx-auto">
-              <h5>Active tabs</h5>
+              <h5>Overdue tabs</h5>
               <Link to="/active">View All</Link>
-              <RecentOrdersTable />
+              <ActiveTabsTable />
             </div>
           </MDBCol>
           <MDBCol md="6" className="my-2">
@@ -59,15 +61,15 @@ const SummaryPage = ({ history }) => {
             <div className="w-responsive mx-auto">
               <h5>Seybrew tabs</h5>
               <Link to="/seybrew">View All</Link>
-              <RecentOrdersTable />
+              <SeybrewTabsTable />
             </div>
           </MDBCol>
           <MDBCol md="6" className="my-2">
-            {/* Overdue tabs table */}
+            {/* Active tabs table */}
             <div className="w-responsive mx-auto">
-              <h5>Overdue tabs</h5>
+              <h5>Active tabs</h5>
               <Link to="/active">View All</Link>
-              <RecentOrdersTable />
+              <ActiveTabsTable />
             </div>
           </MDBCol>
         </MDBRow>
