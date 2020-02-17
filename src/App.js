@@ -17,11 +17,10 @@ import SeybrewPage from './pages/seybrew/SeybrewPage';
 const App = () => {
   const currentUser = useAuth();
 
-  // console.log(currentUser);
-
   const customers = useCustomers();
 
-  console.log(customers);
+  // console.log(currentUser);
+  // console.log(customers);
 
   return (
     <FirebaseContext.Provider

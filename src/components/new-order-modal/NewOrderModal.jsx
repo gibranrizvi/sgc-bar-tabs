@@ -8,25 +8,33 @@ import {
   MDBModalBody,
   MDBModalFooter,
   MDBListGroup,
-  MDBListGroupItem
+  MDBListGroupItem,
+  MDBBadge
 } from 'mdbreact';
 
 import { FirebaseContext } from '../../firebase/firebase';
+import beverageList from '../../beverage-list/beverageList';
 
 const NewOrderModal = ({ currentUser }) => {
   const { customers } = React.useContext(FirebaseContext);
 
   const [modalOpen, setModalOpen] = React.useState(false);
   const [submitting, setSubmitting] = React.useState(false);
-  const [searchTerm, setSearchTerm] = React.useState('');
+  const [searchCustomerTerm, setSearchCustomerTerm] = React.useState('');
+  const [searchBeverageTerm, setSearchBeverageTerm] = React.useState('');
+
+  const [addedBeverages, setAddedBeverages] = React.useState([]);
+  const [availableBeverages, setAvailableBeverages] = React.useState(
+    beverageList
+  );
   const [values, setValues] = React.useState({
     orderedBy: '',
     total: 0,
-    items: []
+    order: []
   });
   const [errors, setErrors] = React.useState({});
 
-  const { orderedBy, total, items } = values;
+  const { orderedBy, total, order } = values;
 
   const toggle = () => setModalOpen(prev => !prev);
 
@@ -44,7 +52,7 @@ const NewOrderModal = ({ currentUser }) => {
       const orderData = {
         orderedBy,
         total,
-        items,
+        order,
         createdBy: currentUser
       };
 
@@ -54,7 +62,7 @@ const NewOrderModal = ({ currentUser }) => {
       setValues({
         orderedBy: '',
         total: 0,
-        items: []
+        order: []
       });
       return toggle();
     } catch (error) {
@@ -64,9 +72,11 @@ const NewOrderModal = ({ currentUser }) => {
     }
   };
 
-  const renderList = () => {
+  const renderCustomerSearchResults = () => {
     const filteredCustomers = customers.filter(customer =>
-      customer.displayName.toLowerCase().includes(searchTerm.toLowerCase())
+      customer.displayName
+        .toLowerCase()
+        .includes(searchCustomerTerm.toLowerCase())
     );
 
     if (orderedBy) {
@@ -80,31 +90,85 @@ const NewOrderModal = ({ currentUser }) => {
             className="pointer"
             icon="times"
             onClick={() => {
-              setSearchTerm('');
+              setSearchCustomerTerm('');
               return setValues({ ...values, orderedBy: '' });
             }}
           />
         </MDBListGroupItem>
       );
     } else {
-      if (searchTerm) {
+      if (searchCustomerTerm) {
         return filteredCustomers.map(customer => (
           <MDBListGroupItem
             key={customer.id}
             onClick={() => {
-              setSearchTerm(customer.displayName);
               return setValues({ ...values, orderedBy: customer });
             }}
             hover
-            className="pointer"
+            className="d-flex justify-content-left align-items-center pointer"
           >
             {customer.displayName}
           </MDBListGroupItem>
         ));
-      } else {
-        return <p>Search customer name</p>;
       }
     }
+  };
+
+  const renderBeverageSearchResults = () => {
+    const filteredBeverages = availableBeverages.filter(item =>
+      item.name.toLowerCase().includes(searchBeverageTerm.toLowerCase())
+    );
+
+    if (searchBeverageTerm) {
+      return filteredBeverages.map(item => (
+        <MDBListGroupItem
+          key={item.id}
+          onClick={() => updateBeverageLists(item)}
+          hover
+          className="d-flex justify-content-left align-items-center pointer"
+        >
+          {item.name}
+        </MDBListGroupItem>
+      ));
+    }
+  };
+
+  const renderBeveragePills = () => (
+    <div className="text-left my-4">
+      {availableBeverages.map(item => (
+        <MDBBadge
+          key={item.id}
+          color="primary"
+          pill
+          className="mr-1 pointer"
+          onClick={() => updateBeverageLists(item)}
+        >
+          {item.name}
+        </MDBBadge>
+      ))}
+    </div>
+  );
+
+  const renderOrder = () => {
+    return addedBeverages.map(({ id, name, price }) => (
+      <MDBListGroupItem
+        key={id}
+        hover
+        className="d-flex justify-content-left align-items-center pointer"
+      >
+        {name} - SR {price}.00
+      </MDBListGroupItem>
+    ));
+  };
+
+  const updateBeverageLists = item => {
+    const newBeverageList = [...addedBeverages, { ...item, count: 1 }];
+    setAddedBeverages(newBeverageList);
+    setValues({ ...values, order: addedBeverages });
+
+    return setAvailableBeverages(
+      availableBeverages.filter(({ id }) => id !== item.id)
+    );
   };
 
   return (
@@ -116,16 +180,32 @@ const NewOrderModal = ({ currentUser }) => {
         <form onSubmit={handleSubmit} noValidate>
           <MDBModalHeader toggle={toggle}>Create New Order</MDBModalHeader>
           <MDBModalBody>
+            {/* Customer selection */}
             {!orderedBy && (
               <MDBInput
-                label="Search"
+                label="Search Customers"
                 type="text"
-                value={searchTerm}
-                onChange={({ target }) => setSearchTerm(target.value)}
+                value={searchCustomerTerm}
+                onChange={({ target }) => setSearchCustomerTerm(target.value)}
                 outline
               />
             )}
-            <MDBListGroup>{customers && renderList()}</MDBListGroup>
+            {customers && renderCustomerSearchResults()}
+            <hr />
+
+            {/* Order creation */}
+            <MDBInput
+              label="Search Beverages"
+              type="text"
+              value={searchBeverageTerm}
+              onChange={({ target }) => setSearchBeverageTerm(target.value)}
+              outline
+            />
+            {renderBeverageSearchResults()}
+            {renderBeveragePills()}
+            <p className="text-center">Current Order</p>
+            {renderOrder()}
+            <hr />
           </MDBModalBody>
           <MDBModalFooter>
             <MDBBtn gradient="peach" onClick={toggle}>
