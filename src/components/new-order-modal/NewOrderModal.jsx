@@ -7,7 +7,6 @@ import {
   MDBModalHeader,
   MDBModalBody,
   MDBModalFooter,
-  MDBListGroup,
   MDBListGroupItem,
   MDBBadge
 } from 'mdbreact';
@@ -22,11 +21,8 @@ const NewOrderModal = ({ currentUser }) => {
   const [submitting, setSubmitting] = React.useState(false);
   const [searchCustomerTerm, setSearchCustomerTerm] = React.useState('');
   const [searchBeverageTerm, setSearchBeverageTerm] = React.useState('');
-
   const [addedBeverages, setAddedBeverages] = React.useState([]);
-  const [availableBeverages, setAvailableBeverages] = React.useState(
-    beverageList
-  );
+
   const [values, setValues] = React.useState({
     orderedBy: '',
     total: 0,
@@ -115,7 +111,7 @@ const NewOrderModal = ({ currentUser }) => {
   };
 
   const renderBeverageSearchResults = () => {
-    const filteredBeverages = availableBeverages.filter(item =>
+    const filteredBeverages = getAvailableBeverages().filter(item =>
       item.name.toLowerCase().includes(searchBeverageTerm.toLowerCase())
     );
 
@@ -135,7 +131,7 @@ const NewOrderModal = ({ currentUser }) => {
 
   const renderBeveragePills = () => (
     <div className="text-left my-4">
-      {availableBeverages.map(item => (
+      {getAvailableBeverages().map(item => (
         <MDBBadge
           key={item.id}
           color="primary"
@@ -149,33 +145,36 @@ const NewOrderModal = ({ currentUser }) => {
     </div>
   );
 
+  const getAvailableBeverages = () =>
+    beverageList.filter(
+      item1 => !addedBeverages.some(item2 => item1.id === item2.id)
+    );
+
   const renderOrder = () => {
-    return addedBeverages.map(({ id, name, price }) => (
+    return addedBeverages.map(item => (
       <MDBListGroupItem
-        key={id}
+        key={item.id}
         hover
         className="d-flex justify-content-between align-items-center pointer"
       >
-        {name} - SR {price}.00
+        {item.name} - SR {item.price}.00
         <MDBIcon
           className="pointer"
           icon="times"
-          onClick={() => {
-            return setValues({ ...values });
-          }}
+          onClick={() => removeBeverage(item)}
         />
       </MDBListGroupItem>
     ));
   };
 
   const addBeverage = item => {
-    const newBeverageList = [...addedBeverages, { ...item, count: 1 }];
-    setAddedBeverages(newBeverageList);
-    setValues({ ...values, order: addedBeverages });
+    const updatedOrder = [...addedBeverages, { ...item, count: 1 }];
+    return setAddedBeverages(updatedOrder);
+  };
 
-    return setAvailableBeverages(
-      availableBeverages.filter(({ id }) => id !== item.id)
-    );
+  const removeBeverage = item => {
+    const updatedOrder = addedBeverages.filter(({ id }) => id !== item.id);
+    return setAddedBeverages(updatedOrder);
   };
 
   return (
