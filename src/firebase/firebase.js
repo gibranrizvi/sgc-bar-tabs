@@ -2,14 +2,20 @@ import firebase from 'firebase/app';
 import 'firebase/firestore';
 import 'firebase/auth';
 
-const config = {
-  apiKey: 'AIzaSyAwKg_U2cwOs9u0kM1lRXVpUKO762420k4',
-  authDomain: 'sgc-bar-tabs.firebaseapp.com',
-  databaseURL: 'https://sgc-bar-tabs.firebaseio.com',
-  projectId: 'sgc-bar-tabs',
-  storageBucket: 'sgc-bar-tabs.appspot.com',
-  messagingSenderId: '257266451225',
-  appId: '1:257266451225:web:bc57179a26aab446947b88'
+import FirebaseContext from './context';
+import { firebaseConfig } from '../config/config';
+
+const secondaryApp = firebase.initializeApp(firebaseConfig, 'Secondary');
+
+// Create user with firebase auth
+export const createNewUser = (email, password) => {
+  return secondaryApp
+    .auth()
+    .createUserWithEmailAndPassword(email, password)
+    .then(({ user }) => {
+      secondaryApp.auth().signOut();
+      return user;
+    });
 };
 
 // Saving new user or updating existing user in Firestore
@@ -22,13 +28,14 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
 
   if (!snapshot.exists) {
     // Create new user
-    const { displayName, email } = userAuth;
+    const { displayName, email, role } = userAuth;
     const createdAt = new Date();
 
     try {
       await userRef.set({
         displayName,
         email,
+        role,
         createdAt,
         ...additionalData
       });
@@ -52,11 +59,12 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
 };
 
 // Initialize Firebase
-firebase.initializeApp(config);
+firebase.initializeApp(firebaseConfig);
 
 // Export Auth and Firestore services
 export const auth = firebase.auth();
 export const firestore = firebase.firestore();
+export { FirebaseContext };
 
 // Google OAuth set up
 const provider = new firebase.auth.GoogleAuthProvider();

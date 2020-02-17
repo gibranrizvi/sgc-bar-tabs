@@ -12,13 +12,18 @@ const SummaryPage = ({ currentUser, history }) => {
         <MDBContainer className="mt-5">
           <MDBRow className="mt-4 text-center">
             <MDBCol md="12" className="mb-4">
-              <MDBBtn size="lg" gradient="peach" rounded>
+              <MDBBtn size="lg" gradient="peach" rounded onClick={() => {}}>
                 <MDBIcon icon="plus" className="pr-2" /> New Order
               </MDBBtn>
-              <MDBBtn size="lg" gradient="blue" rounded>
+              <MDBBtn size="lg" gradient="blue" rounded onClick={() => {}}>
                 <MDBIcon icon="beer" className="pr-2" /> Add Seybrews
               </MDBBtn>
-              <MDBBtn size="lg" gradient="purple" rounded>
+              <MDBBtn
+                size="lg"
+                gradient="purple"
+                rounded
+                onClick={() => history.push('/register')}
+              >
                 <MDBIcon icon="user" className="pr-2" /> New Customer
               </MDBBtn>
             </MDBCol>
