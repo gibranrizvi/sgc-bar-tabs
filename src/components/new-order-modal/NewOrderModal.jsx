@@ -21,16 +21,11 @@ const NewOrderModal = ({ currentUser }) => {
   const [submitting, setSubmitting] = React.useState(false);
   const [searchCustomerTerm, setSearchCustomerTerm] = React.useState('');
   const [searchBeverageTerm, setSearchBeverageTerm] = React.useState('');
-  const [addedBeverages, setAddedBeverages] = React.useState([]);
+  const [customer, setCustomer] = React.useState('');
+  const [order, setOrder] = React.useState([]);
+  const [total, setTotal] = React.useState(0);
 
-  const [values, setValues] = React.useState({
-    orderedBy: '',
-    total: 0,
-    order: []
-  });
   const [errors, setErrors] = React.useState({});
-
-  const { orderedBy, total, order } = values;
 
   const toggle = () => setModalOpen(prev => !prev);
 
@@ -39,14 +34,13 @@ const NewOrderModal = ({ currentUser }) => {
 
     // Validation
 
-    return console.log(values);
     setSubmitting(true);
 
     setErrors({});
 
     try {
       const orderData = {
-        orderedBy,
+        customer,
         total,
         order,
         createdBy: currentUser
@@ -55,11 +49,11 @@ const NewOrderModal = ({ currentUser }) => {
       // await createOrderDocument(orderData);
 
       setSubmitting(false);
-      setValues({
-        orderedBy: '',
-        total: 0,
-        order: []
-      });
+
+      setCustomer('');
+      setOrder([]);
+      setTotal(0);
+
       return toggle();
     } catch (error) {
       console.log(error);
@@ -75,19 +69,19 @@ const NewOrderModal = ({ currentUser }) => {
         .includes(searchCustomerTerm.toLowerCase())
     );
 
-    if (orderedBy) {
+    if (customer) {
       return (
         <MDBListGroupItem
           className="d-flex justify-content-between align-items-center"
           hover
         >
-          {orderedBy.displayName}
+          {customer.displayName}
           <MDBIcon
             className="pointer"
             icon="times"
             onClick={() => {
               setSearchCustomerTerm('');
-              return setValues({ ...values, orderedBy: '' });
+              return setCustomer('');
             }}
           />
         </MDBListGroupItem>
@@ -98,7 +92,7 @@ const NewOrderModal = ({ currentUser }) => {
           <MDBListGroupItem
             key={customer.id}
             onClick={() => {
-              return setValues({ ...values, orderedBy: customer });
+              return setCustomer(customer);
             }}
             hover
             className="d-flex justify-content-left align-items-center pointer"
@@ -145,13 +139,8 @@ const NewOrderModal = ({ currentUser }) => {
     </div>
   );
 
-  const getAvailableBeverages = () =>
-    beverageList.filter(
-      item1 => !addedBeverages.some(item2 => item1.id === item2.id)
-    );
-
   const renderOrder = () => {
-    return addedBeverages.map(item => (
+    return order.map(item => (
       <MDBListGroupItem
         key={item.id}
         hover
@@ -168,14 +157,17 @@ const NewOrderModal = ({ currentUser }) => {
   };
 
   const addBeverage = item => {
-    const updatedOrder = [...addedBeverages, { ...item, count: 1 }];
-    return setAddedBeverages(updatedOrder);
+    const updatedOrder = [...order, { ...item, count: 1 }];
+    return setOrder(updatedOrder);
   };
 
   const removeBeverage = item => {
-    const updatedOrder = addedBeverages.filter(({ id }) => id !== item.id);
-    return setAddedBeverages(updatedOrder);
+    const updatedOrder = order.filter(({ id }) => id !== item.id);
+    return setOrder(updatedOrder);
   };
+
+  const getAvailableBeverages = () =>
+    beverageList.filter(({ id }) => !order.some(item => id === item.id));
 
   return (
     <>
@@ -187,7 +179,7 @@ const NewOrderModal = ({ currentUser }) => {
           <MDBModalHeader toggle={toggle}>Create New Order</MDBModalHeader>
           <MDBModalBody>
             {/* Customer selection */}
-            {!orderedBy && (
+            {!customer && (
               <MDBInput
                 label="Search Customers"
                 type="text"
