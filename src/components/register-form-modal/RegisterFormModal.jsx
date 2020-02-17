@@ -1,12 +1,25 @@
 import React from 'react';
-import { MDBContainer, MDBRow, MDBCol, MDBInput, MDBBtn } from 'mdbreact';
+import {
+  MDBContainer,
+  MDBRow,
+  MDBCol,
+  MDBInput,
+  MDBBtn,
+  MDBIcon,
+  MDBModal,
+  MDBModalHeader,
+  MDBModalBody,
+  MDBModalFooter
+} from 'mdbreact';
 
 import {
   createNewUser,
   createUserProfileDocument
 } from '../../firebase/firebase';
 
-const RegisterForm = ({ currentUser, history }) => {
+const RegisterFormModal = ({ currentUser, history }) => {
+  const [modalOpen, setModalOpen] = React.useState(false);
+
   const [values, setValues] = React.useState({
     displayName: '',
     role: 'customer', // TODO Hard-coded for now
@@ -103,16 +116,20 @@ const RegisterForm = ({ currentUser, history }) => {
     }
   };
 
+  const toggle = () => setModalOpen(prev => !prev);
+
   return (
-    <MDBContainer>
-      <MDBRow>
-        <MDBCol md="3"></MDBCol>
-        <MDBCol md="6">
-          <form onSubmit={handleSubmit} noValidate>
+    <>
+      <MDBBtn size="lg" gradient="purple" rounded onClick={toggle}>
+        <MDBIcon icon="user" className="pr-2" /> New Customer
+      </MDBBtn>
+      <MDBModal isOpen={modalOpen} toggle={toggle} fullHeight position="left">
+        <form onSubmit={handleSubmit} noValidate>
+          <MDBModalHeader toggle={toggle}>Create New Customer</MDBModalHeader>
+          <MDBModalBody>
             <div className="grey-text">
               <MDBInput
                 label="Name"
-                size="lg"
                 type="text"
                 value={displayName}
                 onChange={({ target }) =>
@@ -131,7 +148,6 @@ const RegisterForm = ({ currentUser, history }) => {
               </MDBInput>
               <MDBInput
                 label="Telephone"
-                size="lg"
                 type="text"
                 value={telephone}
                 onChange={({ target }) =>
@@ -148,7 +164,6 @@ const RegisterForm = ({ currentUser, history }) => {
               <p>Role is customer</p>
               <MDBInput
                 label="Email"
-                size="lg"
                 type="email"
                 value={email}
                 onChange={({ target }) =>
@@ -164,7 +179,6 @@ const RegisterForm = ({ currentUser, history }) => {
               </MDBInput>
               <MDBInput
                 label="Password"
-                size="lg"
                 type="password"
                 value={password}
                 onChange={({ target }) =>
@@ -180,7 +194,6 @@ const RegisterForm = ({ currentUser, history }) => {
               </MDBInput>
               <MDBInput
                 label="Confirm Password"
-                size="lg"
                 type="password"
                 value={confirmPassword}
                 onChange={({ target }) =>
@@ -195,24 +208,19 @@ const RegisterForm = ({ currentUser, history }) => {
                 )}
               </MDBInput>
             </div>
-            <div className="text-center">
-              <MDBBtn
-                rounded
-                gradient="blue"
-                type="submit"
-                size="lg"
-                block
-                disabled={false}
-              >
-                Register
-              </MDBBtn>
-            </div>
-          </form>
-        </MDBCol>
-        <MDBCol md="3"></MDBCol>
-      </MDBRow>
-    </MDBContainer>
+          </MDBModalBody>
+          <MDBModalFooter>
+            <MDBBtn gradient="peach" onClick={toggle}>
+              Cancel
+            </MDBBtn>
+            <MDBBtn type="submit" gradient="blue">
+              Register
+            </MDBBtn>
+          </MDBModalFooter>
+        </form>
+      </MDBModal>
+    </>
   );
 };
 
-export default RegisterForm;
+export default RegisterFormModal;

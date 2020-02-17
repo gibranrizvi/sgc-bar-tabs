@@ -6,6 +6,7 @@ import FirebaseContext from '../../firebase/context';
 import RecentOrdersTable from '../../components/recent-orders-table/RecentOrdersTable';
 import ActiveTabsTable from '../../components/active-tabs-table/ActiveTabsTable';
 import SeybrewTabsTable from '../../components/seybrew-tabs-table/SeybrewTabsTable';
+import RegisterFormModal from '../../components/register-form-modal/RegisterFormModal';
 
 const SummaryPage = ({ history }) => {
   const { currentUser } = React.useContext(FirebaseContext);
@@ -22,20 +23,23 @@ const SummaryPage = ({ history }) => {
         <h2>Summary</h2>
         <MDBRow className="mt-4 text-center">
           <MDBCol md="12" className="mb-4">
-            <MDBBtn size="lg" gradient="peach" rounded onClick={() => {}}>
+            <MDBBtn
+              size="lg"
+              gradient="peach"
+              rounded
+              onClick={() => history.push('/new-order')}
+            >
               <MDBIcon icon="plus" className="pr-2" /> New Order
-            </MDBBtn>
-            <MDBBtn size="lg" gradient="blue" rounded onClick={() => {}}>
-              <MDBIcon icon="beer" className="pr-2" /> Add Seybrews
             </MDBBtn>
             <MDBBtn
               size="lg"
-              gradient="purple"
+              gradient="blue"
               rounded
-              onClick={() => history.push('/register')}
+              onClick={() => history.push('/add-seybrews')}
             >
-              <MDBIcon icon="user" className="pr-2" /> New Customer
+              <MDBIcon icon="beer" className="pr-2" /> Add Seybrews
             </MDBBtn>
+            <RegisterFormModal />
           </MDBCol>
         </MDBRow>
 

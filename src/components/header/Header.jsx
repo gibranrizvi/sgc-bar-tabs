@@ -84,10 +84,7 @@ const Header = ({ history, currentUser }) => {
                         </MDBDropdownToggle>
                         <MDBDropdownMenu className="dropdown-default">
                           <MDBDropdownItem>
-                            <MDBLink
-                              to="/create-order"
-                              style={dropdownItemStyles}
-                            >
+                            <MDBLink to="/new-order" style={dropdownItemStyles}>
                               New Order
                             </MDBLink>
                           </MDBDropdownItem>

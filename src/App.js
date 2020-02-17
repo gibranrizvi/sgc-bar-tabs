@@ -14,7 +14,6 @@ import OrdersPage from './pages/orders/OrdersPage';
 import ActivePage from './pages/active/ActivePage';
 import SeybrewPage from './pages/seybrew/SeybrewPage';
 import CustomersPage from './pages/customers/CustomersPage';
-import RegisterPage from './pages/register/RegisterPage';
 
 const App = () => {
   const currentUser = useAuth();
@@ -29,14 +28,13 @@ const App = () => {
           <Switch>
             <Route exact path="/" component={SummaryPage} />
             <Route exact path="/sign-in" component={SignInPage} />
-            <Route exact path="/register" component={RegisterPage} />
             <Route exact path="/orders" component={OrdersPage} />
             <Route exact path="/active" component={ActivePage} />
             <Route exact path="/seybrew" component={SeybrewPage} />
             <Route exact path="/customers" component={CustomersPage} />
           </Switch>
+          <Footer />
         </Router>
-        <Footer />
       </div>
     </FirebaseContext.Provider>
   );

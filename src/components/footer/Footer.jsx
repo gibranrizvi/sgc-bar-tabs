@@ -1,5 +1,6 @@
 import React from 'react';
 import { MDBContainer, MDBFooter } from 'mdbreact';
+import { Link } from 'react-router-dom';
 
 const Footer = () => {
   return (
@@ -10,7 +11,7 @@ const Footer = () => {
     >
       <div className="footer-copyright text-center py-3">
         <MDBContainer fluid>
-          <a href="/"> Seychelles Golf Club Bar Tabs </a> &copy;{' '}
+          <Link to="/"> Seychelles Golf Club Bar Tabs </Link> &copy;{' '}
           {new Date().getFullYear()}
         </MDBContainer>
       </div>
