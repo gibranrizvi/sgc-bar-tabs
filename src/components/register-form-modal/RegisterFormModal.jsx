@@ -14,7 +14,7 @@ import {
   createUserProfileDocument
 } from '../../firebase/firebase';
 
-const RegisterFormModal = ({ currentUser, history }) => {
+const RegisterFormModal = ({ currentUser }) => {
   const [modalOpen, setModalOpen] = React.useState(false);
   const [submitting, setSubmitting] = React.useState(false);
   const [values, setValues] = React.useState({
@@ -140,102 +140,85 @@ const RegisterFormModal = ({ currentUser, history }) => {
         <form onSubmit={handleSubmit} noValidate>
           <MDBModalHeader toggle={toggle}>Create New Customer</MDBModalHeader>
           <MDBModalBody>
-            <div className="grey-text">
-              <MDBInput
-                label="Name"
-                type="text"
-                value={displayName}
-                onChange={({ target }) =>
-                  setValues({
-                    ...values,
-                    displayName: target.value
-                  })
-                }
-                outline
-              >
-                {errors.displayName && (
-                  <p
-                    className="text-left"
-                    style={{ color: 'red', fontSize: 12 }}
-                  >
-                    {errors.displayName}
-                  </p>
-                )}
-              </MDBInput>
-              <MDBInput
-                label="Telephone"
-                type="text"
-                value={telephone}
-                onChange={({ target }) =>
-                  setValues({ ...values, telephone: target.value })
-                }
-                outline
-              >
-                {errors.telephone && (
-                  <p
-                    className="text-left"
-                    style={{ color: 'red', fontSize: 12 }}
-                  >
-                    {errors.telephone}
-                  </p>
-                )}
-              </MDBInput>
-              <p>Role is customer</p>
-              <MDBInput
-                label="Email"
-                type="email"
-                value={email}
-                onChange={({ target }) =>
-                  setValues({ ...values, email: target.value })
-                }
-                outline
-              >
-                {errors.email && (
-                  <p
-                    className="text-left"
-                    style={{ color: 'red', fontSize: 12 }}
-                  >
-                    {errors.email}
-                  </p>
-                )}
-              </MDBInput>
-              <MDBInput
-                label="Password"
-                type="password"
-                value={password}
-                onChange={({ target }) =>
-                  setValues({ ...values, password: target.value })
-                }
-                outline
-              >
-                {errors.password && (
-                  <p
-                    className="text-left"
-                    style={{ color: 'red', fontSize: 12 }}
-                  >
-                    {errors.password}
-                  </p>
-                )}
-              </MDBInput>
-              <MDBInput
-                label="Confirm Password"
-                type="password"
-                value={confirmPassword}
-                onChange={({ target }) =>
-                  setValues({ ...values, confirmPassword: target.value })
-                }
-                outline
-              >
-                {errors.confirmPassword && (
-                  <p
-                    className="text-left"
-                    style={{ color: 'red', fontSize: 12 }}
-                  >
-                    {errors.confirmPassword}
-                  </p>
-                )}
-              </MDBInput>
-            </div>
+            <MDBInput
+              label="Name"
+              type="text"
+              value={displayName}
+              onChange={({ target }) =>
+                setValues({
+                  ...values,
+                  displayName: target.value
+                })
+              }
+              outline
+            >
+              {errors.displayName && (
+                <p className="text-left" style={{ color: 'red', fontSize: 12 }}>
+                  {errors.displayName}
+                </p>
+              )}
+            </MDBInput>
+            <MDBInput
+              label="Telephone"
+              type="text"
+              value={telephone}
+              onChange={({ target }) =>
+                setValues({ ...values, telephone: target.value })
+              }
+              outline
+            >
+              {errors.telephone && (
+                <p className="text-left" style={{ color: 'red', fontSize: 12 }}>
+                  {errors.telephone}
+                </p>
+              )}
+            </MDBInput>
+            <p>Role is customer</p>
+            <MDBInput
+              label="Email"
+              type="email"
+              value={email}
+              onChange={({ target }) =>
+                setValues({ ...values, email: target.value })
+              }
+              outline
+            >
+              {errors.email && (
+                <p className="text-left" style={{ color: 'red', fontSize: 12 }}>
+                  {errors.email}
+                </p>
+              )}
+            </MDBInput>
+            <MDBInput
+              label="Password"
+              type="password"
+              value={password}
+              onChange={({ target }) =>
+                setValues({ ...values, password: target.value })
+              }
+              outline
+            >
+              {errors.password && (
+                <p className="text-left" style={{ color: 'red', fontSize: 12 }}>
+                  {errors.password}
+                </p>
+              )}
+            </MDBInput>
+            <MDBInput
+              label="Confirm Password"
+              type="password"
+              value={confirmPassword}
+              onChange={({ target }) =>
+                setValues({ ...values, confirmPassword: target.value })
+              }
+              outline
+            >
+              {errors.confirmPassword && (
+                <p className="text-left" style={{ color: 'red', fontSize: 12 }}>
+                  {errors.confirmPassword}
+                </p>
+              )}
+            </MDBInput>
           </MDBModalBody>
           <MDBModalFooter>
             <MDBBtn gradient="peach" onClick={toggle}>

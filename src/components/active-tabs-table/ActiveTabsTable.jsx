@@ -1,10 +1,14 @@
 import React from 'react';
 import { MDBTable, MDBTableBody, MDBTableHead } from 'mdbreact';
 
+import FirebaseContext from '../../firebase/context';
+
 const ActiveTabsTable = () => {
+  const { customers } = React.useContext(FirebaseContext);
+
   return (
     <div className="recent-orders-table mt-3">
-      <MDBTable small hover responsive striped fixed>
+      <MDBTable small hover responsive striped>
         <MDBTableHead color="purple-gradient" textWhite>
           <tr>
             <th>Name</th>
@@ -15,27 +19,20 @@ const ActiveTabsTable = () => {
           </tr>
         </MDBTableHead>
         <MDBTableBody>
-          <tr onClick={() => console.log('Do something')} className="pointer">
-            <td>1</td>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-            <td>@mdo</td>
-          </tr>
-          <tr>
-            <td>2</td>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-            <td>@fat</td>
-          </tr>
-          <tr>
-            <td>3</td>
-            <td>Larry</td>
-            <td>the Bird</td>
-            <td>@twitter</td>
-            <td>@twitter</td>
-          </tr>
+          {customers &&
+            customers.map(customer => (
+              <tr
+                onClick={() => console.log('Do something')}
+                className="pointer"
+                key={customer.id}
+              >
+                <td>{customer.displayName}</td>
+                <td>SR 250</td>
+                <td>16/02/2020</td>
+                <td>16/03/2020</td>
+                <td>View</td>
+              </tr>
+            ))}
         </MDBTableBody>
       </MDBTable>
     </div>

@@ -1,60 +1,150 @@
 import React from 'react';
-import { MDBContainer, MDBRow, MDBCol, MDBInput, MDBBtn } from 'mdbreact';
+import {
+  MDBInput,
+  MDBBtn,
+  MDBIcon,
+  MDBModal,
+  MDBModalHeader,
+  MDBModalBody,
+  MDBModalFooter,
+  MDBListGroup,
+  MDBListGroupItem
+} from 'mdbreact';
 
-import {} from '../../firebase/firebase';
+import { FirebaseContext } from '../../firebase/firebase';
 
-const NewOrderForm = ({ currentUser, history }) => {
+const NewOrderModal = ({ currentUser }) => {
+  const { customers } = React.useContext(FirebaseContext);
+
+  const [modalOpen, setModalOpen] = React.useState(false);
+  const [submitting, setSubmitting] = React.useState(false);
+  const [searchTerm, setSearchTerm] = React.useState('');
   const [values, setValues] = React.useState({
-    handle: '',
-    items: [],
-    total: 0
+    orderedBy: '',
+    total: 0,
+    items: []
   });
   const [errors, setErrors] = React.useState({});
 
-  const { handle, items, total } = values;
+  const { orderedBy, total, items } = values;
+
+  const toggle = () => setModalOpen(prev => !prev);
 
   const handleSubmit = async event => {
     event.preventDefault();
 
-    return console.log({ ...values });
-
     // Validation
+
+    return console.log(values);
+    setSubmitting(true);
 
     setErrors({});
 
     try {
-      // Push to corresponding account page
-      return history.push('/');
+      const orderData = {
+        orderedBy,
+        total,
+        items,
+        createdBy: currentUser
+      };
+
+      // await createOrderDocument(orderData);
+
+      setSubmitting(false);
+      setValues({
+        orderedBy: '',
+        total: 0,
+        items: []
+      });
+      return toggle();
     } catch (error) {
       console.log(error);
+      setSubmitting(false);
+      return setErrors({});
+    }
+  };
+
+  const renderList = () => {
+    const filteredCustomers = customers.filter(customer =>
+      customer.displayName.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    if (orderedBy) {
+      return (
+        <MDBListGroupItem
+          className="d-flex justify-content-between align-items-center"
+          hover
+        >
+          {orderedBy.displayName}
+          <MDBIcon
+            className="pointer"
+            icon="times"
+            onClick={() => {
+              setSearchTerm('');
+              return setValues({ ...values, orderedBy: '' });
+            }}
+          />
+        </MDBListGroupItem>
+      );
+    } else {
+      if (searchTerm) {
+        return filteredCustomers.map(customer => (
+          <MDBListGroupItem
+            key={customer.id}
+            onClick={() => {
+              setSearchTerm(customer.displayName);
+              return setValues({ ...values, orderedBy: customer });
+            }}
+            hover
+            className="pointer"
+          >
+            {customer.displayName}
+          </MDBListGroupItem>
+        ));
+      } else {
+        return <p>Search customer name</p>;
+      }
     }
   };
 
   return (
-    <MDBContainer>
-      <MDBRow>
-        <MDBCol md="3"></MDBCol>
-        <MDBCol md="6">
-          <form onSubmit={handleSubmit} noValidate>
-            <div className="grey-text"></div>
-            <div className="text-center">
-              <MDBBtn
-                rounded
-                gradient="blue"
-                type="submit"
-                size="lg"
-                block
-                disabled={false}
-              >
-                Confirm Order
-              </MDBBtn>
-            </div>
-          </form>
-        </MDBCol>
-        <MDBCol md="3"></MDBCol>
-      </MDBRow>
-    </MDBContainer>
+    <>
+      <MDBBtn block size="lg" gradient="peach" rounded onClick={toggle}>
+        <MDBIcon icon="user" className="pr-2" /> New Order
+      </MDBBtn>
+      <MDBModal isOpen={modalOpen} toggle={toggle} fullHeight position="right">
+        <form onSubmit={handleSubmit} noValidate>
+          <MDBModalHeader toggle={toggle}>Create New Order</MDBModalHeader>
+          <MDBModalBody>
+            {!orderedBy && (
+              <MDBInput
+                label="Search"
+                type="text"
+                value={searchTerm}
+                onChange={({ target }) => setSearchTerm(target.value)}
+                outline
+              />
+            )}
+            <MDBListGroup>{customers && renderList()}</MDBListGroup>
+          </MDBModalBody>
+          <MDBModalFooter>
+            <MDBBtn gradient="peach" onClick={toggle}>
+              Cancel
+            </MDBBtn>
+            <MDBBtn type="submit" gradient="blue">
+              {submitting ? (
+                <div className="spinner-border spinner-border-sm" role="status">
+                  <span className="sr-only">Submitting...</span>
+                </div>
+              ) : (
+                'Confirm'
+              )}
+            </MDBBtn>
+          </MDBModalFooter>
+        </form>
+      </MDBModal>
+    </>
   );
 };
 
-export default NewOrderForm;
+export default NewOrderModal;

@@ -5,33 +5,36 @@ import './App.css';
 
 import { auth, firestore, FirebaseContext } from './firebase/firebase';
 import useAuth from './hooks/useAuth';
+import useCustomers from './hooks/useCustomers';
 
 import Header from './components/header/Header';
 import Footer from './components/footer/Footer';
 import SignInPage from './pages/sign-in/SignInPage';
 import SummaryPage from './pages/summary/SummaryPage';
-import OrdersPage from './pages/orders/OrdersPage';
 import ActivePage from './pages/active/ActivePage';
 import SeybrewPage from './pages/seybrew/SeybrewPage';
-import CustomersPage from './pages/customers/CustomersPage';
 
 const App = () => {
   const currentUser = useAuth();
 
-  console.log(currentUser);
+  // console.log(currentUser);
+
+  const customers = useCustomers();
+
+  console.log(customers);
 
   return (
-    <FirebaseContext.Provider value={{ currentUser, auth, firestore }}>
+    <FirebaseContext.Provider
+      value={{ currentUser, customers, auth, firestore }}
+    >
       <div className="App">
         <Router>
           <Header currentUser={currentUser} />
           <Switch>
             <Route exact path="/" component={SummaryPage} />
             <Route exact path="/sign-in" component={SignInPage} />
-            <Route exact path="/orders" component={OrdersPage} />
             <Route exact path="/active" component={ActivePage} />
             <Route exact path="/seybrew" component={SeybrewPage} />
-            <Route exact path="/customers" component={CustomersPage} />
           </Switch>
           <Footer />
         </Router>

@@ -7,6 +7,7 @@ import RecentOrdersTable from '../../components/recent-orders-table/RecentOrders
 import ActiveTabsTable from '../../components/active-tabs-table/ActiveTabsTable';
 import SeybrewTabsTable from '../../components/seybrew-tabs-table/SeybrewTabsTable';
 import RegisterFormModal from '../../components/register-form-modal/RegisterFormModal';
+import NewOrderModal from '../../components/new-order-modal/NewOrderModal';
 
 const SummaryPage = ({ history }) => {
   const { currentUser } = React.useContext(FirebaseContext);
@@ -23,17 +24,9 @@ const SummaryPage = ({ history }) => {
         <h2>Summary</h2>
         <MDBRow className="mt-5 mb-3 text-center">
           <MDBCol md="4" className="z">
-            <MDBBtn
-              block
-              size="lg"
-              gradient="peach"
-              rounded
-              onClick={() => history.push('/new-order')}
-            >
-              <MDBIcon icon="plus" className="pr-2" /> New Order
-            </MDBBtn>
+            <NewOrderModal currentUser={currentUser} />
           </MDBCol>
-          <MDBCol md="4" className="z">
+          <MDBCol md="4">
             <MDBBtn
               block
               size="lg"
@@ -54,7 +47,6 @@ const SummaryPage = ({ history }) => {
             {/* Recent orders table */}
             <div>
               <h5>Recent orders</h5>
-              <Link to="/orders">View All</Link>
               <RecentOrdersTable />
             </div>
           </MDBCol>

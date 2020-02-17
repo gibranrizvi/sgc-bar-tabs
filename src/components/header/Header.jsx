@@ -50,17 +50,11 @@ const Header = ({ history, currentUser }) => {
                     <MDBNavItem active={currentTab === '/'}>
                       <MDBNavLink to="/">Summary</MDBNavLink>
                     </MDBNavItem>
-                    <MDBNavItem active={currentTab === '/orders'}>
-                      <MDBNavLink to="/orders">Orders</MDBNavLink>
-                    </MDBNavItem>
                     <MDBNavItem active={currentTab === '/active'}>
                       <MDBNavLink to="/active">Active</MDBNavLink>
                     </MDBNavItem>
                     <MDBNavItem active={currentTab === '/seybrew'}>
                       <MDBNavLink to="/seybrew">Seybrew</MDBNavLink>
-                    </MDBNavItem>
-                    <MDBNavItem active={currentTab === '/customers'}>
-                      <MDBNavLink to="/customers">Customers</MDBNavLink>
                     </MDBNavItem>
                   </MDBNavbarNav>
                 ) : (
@@ -76,35 +70,6 @@ const Header = ({ history, currentUser }) => {
             <MDBNavbarNav right>
               {currentUser ? (
                 <>
-                  {!isCustomer && (
-                    <MDBNavItem>
-                      <MDBDropdown>
-                        <MDBDropdownToggle nav caret>
-                          <MDBIcon icon="plus" />
-                        </MDBDropdownToggle>
-                        <MDBDropdownMenu className="dropdown-default">
-                          <MDBDropdownItem>
-                            <MDBLink to="/new-order" style={dropdownItemStyles}>
-                              New Order
-                            </MDBLink>
-                          </MDBDropdownItem>
-                          <MDBDropdownItem>
-                            <MDBLink
-                              to="/add-seybrews"
-                              style={dropdownItemStyles}
-                            >
-                              Add Seybrews
-                            </MDBLink>
-                          </MDBDropdownItem>
-                          <MDBDropdownItem>
-                            <MDBLink to="/register" style={dropdownItemStyles}>
-                              Create User
-                            </MDBLink>
-                          </MDBDropdownItem>
-                        </MDBDropdownMenu>
-                      </MDBDropdown>
-                    </MDBNavItem>
-                  )}
                   <MDBNavItem>
                     <MDBDropdown>
                       <MDBDropdownToggle nav caret>
