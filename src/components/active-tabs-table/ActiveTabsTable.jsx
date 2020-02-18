@@ -1,10 +1,35 @@
 import React from 'react';
 import { MDBTable, MDBTableBody, MDBTableHead } from 'mdbreact';
 
+import { format } from 'date-fns';
+
 import FirebaseContext from '../../firebase/context';
 
 const ActiveTabsTable = () => {
   const { customers } = React.useContext(FirebaseContext);
+
+  const renderTableRow = customer => {
+    const { id, displayName, tabs } = customer;
+
+    const activeTab = tabs[tabs.length - 1];
+
+    const startDate = format(activeTab.startDate.toDate(), 'dd/MM/yyyy');
+    const dueDate = format(activeTab.dueDate.toDate(), 'dd/MM/yyyy');
+
+    return (
+      <tr
+        onClick={() => console.log('Do something')}
+        className="pointer"
+        key={id}
+      >
+        <td>{displayName}</td>
+        <td>SR {activeTab.tabAmount}.00</td>
+        <td>{startDate}</td>
+        <td>{dueDate}</td>
+        <td>View</td>
+      </tr>
+    );
+  };
 
   return (
     <div className="recent-orders-table mt-3">
@@ -20,19 +45,9 @@ const ActiveTabsTable = () => {
         </MDBTableHead>
         <MDBTableBody>
           {customers &&
-            customers.map(customer => (
-              <tr
-                onClick={() => console.log('Do something')}
-                className="pointer"
-                key={customer.id}
-              >
-                <td>{customer.displayName}</td>
-                <td>SR 250</td>
-                <td>16/02/2020</td>
-                <td>16/03/2020</td>
-                <td>View</td>
-              </tr>
-            ))}
+            customers.map(
+              customer => customer.hasActiveTab && renderTableRow(customer)
+            )}
         </MDBTableBody>
       </MDBTable>
     </div>
