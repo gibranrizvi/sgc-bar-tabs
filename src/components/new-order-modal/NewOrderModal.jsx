@@ -25,8 +25,6 @@ const NewOrderModal = ({ currentUser }) => {
   const [order, setOrder] = React.useState([]);
   const [total, setTotal] = React.useState(0);
 
-  const [errors, setErrors] = React.useState({});
-
   React.useEffect(() => {
     const sum = getTotal();
     setTotal(sum);
