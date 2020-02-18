@@ -12,7 +12,7 @@ const secondaryApp = firebase.initializeApp(firebaseConfig, 'Secondary');
 export const createOrderDocument = async (orderData, additionalData) => {
   const { customer, order, total, createdBy } = orderData;
 
-  const { id, activeTab, tabAmount, orders } = customer;
+  const { id, tabs, hasActiveTab } = customer;
 
   const userRef = firestore.doc(`users/${id}`);
 
@@ -22,7 +22,7 @@ export const createOrderDocument = async (orderData, additionalData) => {
     // Create new order
     const createdAt = new Date();
 
-    if (!activeTab) {
+    if (!hasActiveTab) {
       // Create new tab
       const startDate = createdAt;
       const dueDate = add(startDate, { months: 1 });
@@ -31,18 +31,17 @@ export const createOrderDocument = async (orderData, additionalData) => {
 
       try {
         await userRef.update({
-          orders: [
+          tabs: [
+            ...tabs,
             {
-              items: order,
-              total,
-              createdAt,
-              createdBy
+              orders: [{ items: order, total, createdAt, createdBy }],
+              startDate,
+              dueDate,
+              active: true,
+              tabAmount: total
             }
           ],
-          startDate,
-          dueDate,
-          activeTab: true,
-          tabAmount: total
+          hasActiveTab: true
         });
       } catch (error) {
         console.log(error);
@@ -50,17 +49,30 @@ export const createOrderDocument = async (orderData, additionalData) => {
     } else {
       // Update existing tab
       try {
+        let updatedTabs = [];
+
+        for (let i = 0; i < tabs.length; i++) {
+          if (tabs[i].active) {
+            updatedTabs.push({
+              ...tabs[i],
+              orders: [
+                ...tabs[i].orders,
+                {
+                  items: order,
+                  total,
+                  createdAt,
+                  createdBy
+                }
+              ],
+              tabAmount: tabs[i].tabAmount + total
+            });
+          } else {
+            updatedTabs.push(tabs[i]);
+          }
+        }
+
         await userRef.update({
-          orders: [
-            ...orders,
-            {
-              items: order,
-              total,
-              createdAt,
-              createdBy
-            }
-          ],
-          tabAmount: tabAmount + total
+          tabs: updatedTabs
         });
       } catch (error) {}
     }
@@ -100,11 +112,8 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
         role,
         telephone,
         email,
-        orders: [],
-        activeTab: false,
-        startDate: null,
-        dueDate: null,
-        tabAmount: 0,
+        tabs: [],
+        hasActiveTab: false,
         seybrewTab: 0,
         createdBy,
         createdAt,
