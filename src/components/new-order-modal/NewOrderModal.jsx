@@ -24,6 +24,7 @@ const NewOrderModal = ({ currentUser }) => {
   const [customer, setCustomer] = React.useState('');
   const [order, setOrder] = React.useState([]);
   const [total, setTotal] = React.useState(0);
+  const [seybrewOrder, setSeybrewOrder] = React.useState(0);
 
   React.useEffect(() => {
     const sum = getTotal();
@@ -42,6 +43,7 @@ const NewOrderModal = ({ currentUser }) => {
         customer,
         order,
         total,
+        seybrewOrder,
         createdBy: currentUser
       };
 
@@ -57,7 +59,6 @@ const NewOrderModal = ({ currentUser }) => {
     } catch (error) {
       console.log(error);
       setSubmitting(false);
-      return setErrors({});
     }
   };
 
@@ -80,6 +81,7 @@ const NewOrderModal = ({ currentUser }) => {
             icon="times"
             onClick={() => {
               setSearchCustomerTerm('');
+              setSeybrewOrder(0);
               return setCustomer('');
             }}
           />
@@ -179,8 +181,13 @@ const NewOrderModal = ({ currentUser }) => {
     return setOrder(updatedOrder);
   };
 
-  const getAvailableBeverages = () =>
-    beverageList.filter(({ id }) => !order.some(item => id === item.id));
+  const getAvailableBeverages = () => {
+    const availableBeverages = beverageList.filter(
+      ({ id }) => !order.some(item => id === item.id)
+    );
+    console.log(availableBeverages);
+    return availableBeverages;
+  };
 
   const getTotal = () => {
     let sum = 0;
@@ -215,6 +222,40 @@ const NewOrderModal = ({ currentUser }) => {
     return setOrder(updatedOrder);
   };
 
+  const renderSeybrewOrder = () => {
+    return (
+      customer.seybrewTab.count > 0 && (
+        <MDBListGroupItem
+          hover
+          className="d-flex justify-content-between align-items-center"
+        >
+          Seybrew - FREE x {seybrewOrder}
+          <div>
+            {seybrewOrder > 1 && (
+              <MDBIcon
+                className="mr-3 pointer"
+                icon="minus"
+                onClick={() => setSeybrewOrder(prev => prev - 1)}
+              />
+            )}
+            {seybrewOrder < customer.seybrewTab.count && (
+              <MDBIcon
+                className="mr-3 pointer"
+                icon="plus"
+                onClick={() => setSeybrewOrder(prev => prev + 1)}
+              />
+            )}
+            <MDBIcon
+              className="pointer"
+              icon="times"
+              onClick={() => setSeybrewOrder(0)}
+            />
+          </div>
+        </MDBListGroupItem>
+      )
+    );
+  };
+
   return (
     <>
       <MDBBtn block size="lg" gradient="peach" rounded onClick={toggle}>
@@ -237,6 +278,18 @@ const NewOrderModal = ({ currentUser }) => {
             {customers && renderCustomerSearchResults()}
             <hr />
 
+            {/* Seybrew tab */}
+            {customer && (
+              <>
+                <p>
+                  Seybrew tab: {customer.seybrewTab.count - seybrewOrder}{' '}
+                  available
+                </p>
+                {renderSeybrewOrder()}
+                <hr />
+              </>
+            )}
+
             {/* Order creation */}
             <MDBInput
               label="Search Beverages"
@@ -249,6 +302,7 @@ const NewOrderModal = ({ currentUser }) => {
             {renderBeveragePills()}
             <p className="text-center">Current Order</p>
             {renderOrder()}
+            {customer && seybrewOrder > 0 && renderSeybrewOrder()}
             <hr />
 
             {/* Order creation */}
@@ -261,7 +315,7 @@ const NewOrderModal = ({ currentUser }) => {
             <MDBBtn
               type="submit"
               gradient="blue"
-              disabled={!customer || order.length === 0}
+              disabled={!customer || (order.length === 0 && seybrewOrder === 0)}
             >
               {submitting ? (
                 <div className="spinner-border spinner-border-sm" role="status">

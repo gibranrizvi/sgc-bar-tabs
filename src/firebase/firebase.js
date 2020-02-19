@@ -9,17 +9,20 @@ import { firebaseConfig } from '../config/config';
 const secondaryApp = firebase.initializeApp(firebaseConfig, 'Secondary');
 
 // Create new order document
-export const createOrderDocument = async (orderData, additionalData) => {
-  const { customer, order, total, createdBy } = orderData;
+export const createOrderDocument = async orderData => {
+  const { customer, order, total, seybrewOrder, createdBy } = orderData;
 
-  const { id, tabs, hasActiveTab } = customer;
+  if (order.length === 0) {
+    return;
+  }
+
+  const { id, tabs, hasActiveTab, seybrewTab } = customer;
 
   const userRef = firestore.doc(`users/${id}`);
 
   const snapshot = await userRef.get();
 
   if (snapshot.exists) {
-    // Create new order
     const createdAt = new Date();
 
     if (!hasActiveTab) {
@@ -114,7 +117,7 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
         email,
         tabs: [],
         hasActiveTab: false,
-        seybrewTab: 0,
+        seybrewTab: { count: 0, orders: [] },
         createdBy,
         createdAt,
         ...additionalData
