@@ -14,8 +14,11 @@ const SeybrewTabsTable = ({ history }) => {
     const { count } = seybrewTab;
 
     return (
-      <tr className="pointer" key={id}>
-        <td onClick={() => history.push(`/customer/${customer.handle}`)}>
+      <tr key={id}>
+        <td
+          onClick={() => history.push(`/customer/${customer.handle}`)}
+          className="pointer"
+        >
           {displayName}
         </td>
         <td>{count}</td>

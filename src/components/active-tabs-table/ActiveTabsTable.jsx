@@ -19,8 +19,11 @@ const ActiveTabsTable = ({ history }) => {
     const dueDate = format(activeTab.dueDate.toDate(), 'dd/MM/yyyy');
 
     return (
-      <tr className="pointer" key={id}>
-        <td onClick={() => history.push(`/customer/${customer.handle}`)}>
+      <tr key={id}>
+        <td
+          onClick={() => history.push(`/customer/${customer.handle}`)}
+          className="pointer"
+        >
           {displayName}
         </td>
         <td>SR {activeTab.tabAmount}.00</td>

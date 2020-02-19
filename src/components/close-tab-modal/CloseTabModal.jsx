@@ -38,8 +38,8 @@ const CloseTabModal = ({ selectedCustomer, buttonType, activeTab }) => {
       {buttonType === 'icon' ? (
         <MDBIcon className="pointer" icon="times" onClick={toggle} />
       ) : (
-        <MDBBtn block size="lg" gradient="peach" rounded onClick={toggle}>
-          <MDBIcon icon="user" className="pr-2" /> Close Tab
+        <MDBBtn gradient="peach" className="px-3 py-2" rounded onClick={toggle}>
+          <MDBIcon icon="times" className="pr-1" /> Close
         </MDBBtn>
       )}
       <MDBModal isOpen={modalOpen} toggle={toggle} side position="top-right">

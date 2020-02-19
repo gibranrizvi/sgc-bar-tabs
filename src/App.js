@@ -12,7 +12,7 @@ import Footer from './components/footer/Footer';
 import SignInPage from './pages/sign-in/SignInPage';
 import SummaryPage from './pages/summary/SummaryPage';
 import CustomersPage from './pages/customers/CustomersPage';
-import CustomerPage from './pages/customer/CustomerPage';
+import CustomerDetailPage from './pages/customer-detail/CustomerDetailPage';
 
 const App = () => {
   const currentUser = useAuth();
@@ -33,7 +33,11 @@ const App = () => {
             <Route exact path="/" component={SummaryPage} />
             <Route exact path="/sign-in" component={SignInPage} />
             <Route exact path="/customers" component={CustomersPage} />
-            <Route exact path="/customer/:handle" component={CustomerPage} />
+            <Route
+              exact
+              path="/customer/:handle"
+              component={CustomerDetailPage}
+            />
           </Switch>
           <Footer />
         </Router>
