@@ -8,6 +8,43 @@ import { firebaseConfig } from '../config/config';
 
 const secondaryApp = firebase.initializeApp(firebaseConfig, 'Secondary');
 
+// Close an active tab
+export const closeTab = async (customer, activeTab, currentUser) => {
+  const { id, tabs } = customer;
+
+  const userRef = firestore.doc(`users/${id}`);
+
+  const snapshot = await userRef.get();
+
+  if (snapshot.exists) {
+    const updatedTab = {
+      ...activeTab,
+      active: false,
+      closedBy: currentUser,
+      closedAt: new Date()
+    };
+
+    const updatedTabs = [
+      updatedTab,
+      ...tabs.filter((tab, index) => index !== 0)
+    ];
+    const updatedCustomer = {
+      ...customer,
+      hasActiveTab: false,
+      tabs: updatedTabs
+    };
+
+    try {
+      await userRef.update({ ...updatedCustomer });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  return userRef;
+};
+
+// Add or remove seybrews
 export const addSeybrews = async data => {
   const { customer, seybrewsToAdd } = data;
 
@@ -101,8 +138,6 @@ export const createOrderDocument = async orderData => {
       // Create new tab
       const startDate = createdAt;
       const dueDate = add(startDate, { months: 1 });
-
-      console.log(customer);
 
       try {
         await userRef.update({

@@ -30,7 +30,7 @@ const NewOrderModal = ({ buttonType, selectedCustomer }) => {
     if (selectedCustomer) {
       setCustomer(selectedCustomer);
     }
-  }, []);
+  }, [selectedCustomer]);
 
   React.useEffect(() => {
     const sum = getTotal();

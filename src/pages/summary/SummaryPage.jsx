@@ -1,9 +1,8 @@
 import React from 'react';
-import { MDBContainer, MDBRow, MDBCol, MDBBtn, MDBIcon } from 'mdbreact';
+import { MDBContainer, MDBRow, MDBCol } from 'mdbreact';
 import { Link } from 'react-router-dom';
 
 import FirebaseContext from '../../firebase/context';
-import RecentOrdersTable from '../../components/recent-orders-table/RecentOrdersTable';
 import ActiveTabsTable from '../../components/active-tabs-table/ActiveTabsTable';
 import SeybrewTabsTable from '../../components/seybrew-tabs-table/SeybrewTabsTable';
 import RegisterFormModal from '../../components/register-form-modal/RegisterFormModal';

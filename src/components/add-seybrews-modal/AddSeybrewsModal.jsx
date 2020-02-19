@@ -19,7 +19,7 @@ const AddSeybrewsModal = ({ buttonType, selectedCustomer }) => {
   const [submitting, setSubmitting] = React.useState(false);
   const [searchCustomerTerm, setSearchCustomerTerm] = React.useState('');
   const [customer, setCustomer] = React.useState('');
-  const [seybrewsToAdd, setSeybrewsToAdd] = React.useState(null);
+  const [seybrewsToAdd, setSeybrewsToAdd] = React.useState(0);
   const [error, setError] = React.useState('');
 
   const toggle = () => {
@@ -56,7 +56,7 @@ const AddSeybrewsModal = ({ buttonType, selectedCustomer }) => {
       setSubmitting(false);
 
       setCustomer('');
-      setSeybrewsToAdd(null);
+      setSeybrewsToAdd(0);
 
       return toggle();
     } catch (error) {

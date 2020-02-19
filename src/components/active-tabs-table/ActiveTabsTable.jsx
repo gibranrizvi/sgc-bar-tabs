@@ -2,9 +2,10 @@ import React from 'react';
 import { MDBTable, MDBTableBody, MDBTableHead, MDBIcon } from 'mdbreact';
 import { format } from 'date-fns';
 
-import FirebaseContext from '../../firebase/context';
+import { FirebaseContext } from '../../firebase/firebase';
 
 import NewOrderModal from '../new-order-modal/NewOrderModal';
+import CloseTabModal from '../close-tab-modal/CloseTabModal';
 
 const ActiveTabsTable = ({ history }) => {
   const { customers } = React.useContext(FirebaseContext);
@@ -32,7 +33,11 @@ const ActiveTabsTable = ({ history }) => {
             icon="mobile-alt"
             onClick={() => console.log(`Send SMS to ${displayName}`)}
           />
-          <MDBIcon className="pointer" icon="times" onClick={() => {}} />
+          <CloseTabModal
+            buttonType="icon"
+            selectedCustomer={customer}
+            activeTab={activeTab}
+          />
         </td>
       </tr>
     );
