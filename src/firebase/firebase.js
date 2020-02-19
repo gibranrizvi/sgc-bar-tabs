@@ -26,13 +26,13 @@ export const addSeybrews = async data => {
 
     const updatedSeybrewCount = seybrewTab.count + seybrewsToAdd;
     const seybrewTabOrders = [
-      ...seybrewTab.orders,
       {
         type: 'addition',
         amount: seybrewsToAdd,
         total: updatedSeybrewCount,
         date: createdAt
-      }
+      },
+      ...seybrewTab.orders
     ];
 
     const updatedSeybrewTab = {
@@ -71,13 +71,13 @@ export const createOrderDocument = async orderData => {
 
     const updatedSeybrewCount = seybrewTab.count - seybrewOrder;
     const seybrewTabOrders = [
-      ...seybrewTab.orders,
       {
         type: 'removal',
         amount: seybrewOrder,
         total: updatedSeybrewCount,
         date: createdAt
-      }
+      },
+      ...seybrewTab.orders
     ];
     const updatedSeybrewTab = {
       count: updatedSeybrewCount,
@@ -107,14 +107,14 @@ export const createOrderDocument = async orderData => {
       try {
         await userRef.update({
           tabs: [
-            ...tabs,
             {
               orders: [{ items: order, total, createdAt, createdBy }],
               startDate,
               dueDate,
               active: true,
               tabAmount: total
-            }
+            },
+            ...tabs
           ],
           hasActiveTab: true,
           seybrewTab: seybrewOrder === 0 ? seybrewTab : updatedSeybrewTab
@@ -132,13 +132,13 @@ export const createOrderDocument = async orderData => {
             updatedTabs.push({
               ...tabs[i],
               orders: [
-                ...tabs[i].orders,
                 {
                   items: order,
                   total,
                   createdAt,
                   createdBy
-                }
+                },
+                ...tabs[i].orders
               ],
               tabAmount: tabs[i].tabAmount + total
             });
