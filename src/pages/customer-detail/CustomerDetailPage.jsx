@@ -136,6 +136,8 @@ const CustomerDetailPage = ({ history, match }) => {
           ) : (
             <>
               <h2>- {customer.displayName} -</h2>
+              <h5>Telephone: {customer.telephone} </h5>
+              <h5>Email: {customer.email} </h5>
               {renderActiveTab()}
 
               <hr />

@@ -1,5 +1,5 @@
 import React from 'react';
-import { MDBTable, MDBTableBody, MDBTableHead, MDBIcon } from 'mdbreact';
+import { MDBTable, MDBTableBody, MDBTableHead } from 'mdbreact';
 import { format } from 'date-fns';
 
 import { FirebaseContext } from '../../firebase/firebase';

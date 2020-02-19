@@ -11,7 +11,8 @@ import {
 
 import {
   createNewUser,
-  createUserProfileDocument
+  createUserProfileDocument,
+  FirebaseContext
 } from '../../firebase/firebase';
 
 const INITIAL_STATE = {
@@ -23,7 +24,9 @@ const INITIAL_STATE = {
   confirmPassword: ''
 };
 
-const RegisterFormModal = ({ currentUser }) => {
+const RegisterFormModal = () => {
+  const { customers, currentUser } = React.useContext(FirebaseContext);
+
   const [modalOpen, setModalOpen] = React.useState(false);
   const [submitting, setSubmitting] = React.useState(false);
   const [values, setValues] = React.useState(INITIAL_STATE);
@@ -46,9 +49,19 @@ const RegisterFormModal = ({ currentUser }) => {
   const handleSubmit = async event => {
     event.preventDefault();
 
+    const handle = displayName
+      .toLowerCase()
+      .trim()
+      .replace(' ', '-');
+
     // Validation
     if (!displayName) {
       return setErrors({ ...errors, displayName: 'Name is required' });
+    } else if (customers.find(customer => customer.handle === handle)) {
+      return setErrors({
+        ...errors,
+        displayName: 'User with this name already exists'
+      });
     } else if (!telephone) {
       return setErrors({
         ...errors,
@@ -95,10 +108,7 @@ const RegisterFormModal = ({ currentUser }) => {
       .split(' ')
       .map(word => word.charAt(0).toUpperCase() + word.substring(1))
       .join(' ');
-    const handle = displayName
-      .toLowerCase()
-      .trim()
-      .replace(' ', '-');
+
     const formattedEmail = email ? email : handle + '@sgcbar.com';
 
     try {
@@ -159,7 +169,7 @@ const RegisterFormModal = ({ currentUser }) => {
             </MDBInput>
             <MDBInput
               label="Telephone"
-              type="text"
+              type="tel"
               value={telephone}
               onChange={({ target }) =>
                 setValues({ ...values, telephone: target.value })
