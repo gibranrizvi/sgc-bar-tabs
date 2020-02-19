@@ -54,6 +54,7 @@ const NewOrderModal = ({ currentUser }) => {
       setCustomer('');
       setOrder([]);
       setTotal(0);
+      setSeybrewOrder(0);
 
       return toggle();
     } catch (error) {

@@ -12,7 +12,7 @@ const secondaryApp = firebase.initializeApp(firebaseConfig, 'Secondary');
 export const createOrderDocument = async orderData => {
   const { customer, order, total, seybrewOrder, createdBy } = orderData;
 
-  if (order.length === 0) {
+  if (order.length === 0 && seybrewOrder === 0) {
     return;
   }
 
@@ -24,6 +24,29 @@ export const createOrderDocument = async orderData => {
 
   if (snapshot.exists) {
     const createdAt = new Date();
+
+    const updatedSeybrewCount = seybrewTab.count - seybrewOrder;
+    const seybrewTabOrders = [
+      ...seybrewTab.orders,
+      { type: 'removal', amount: seybrewOrder, date: createdAt }
+    ];
+    const updatedSeybrewTab = {
+      count: updatedSeybrewCount,
+      orders: seybrewTabOrders
+    };
+
+    // If order consists of only free seybrews, update only seybrew tab
+    if (order.length === 0 && seybrewOrder > 0) {
+      try {
+        await userRef.update({
+          seybrewTab: updatedSeybrewTab
+        });
+      } catch (error) {
+        console.log(error);
+      }
+
+      return userRef;
+    }
 
     if (!hasActiveTab) {
       // Create new tab
@@ -44,7 +67,8 @@ export const createOrderDocument = async orderData => {
               tabAmount: total
             }
           ],
-          hasActiveTab: true
+          hasActiveTab: true,
+          seybrewTab: updatedSeybrewTab
         });
       } catch (error) {
         console.log(error);
@@ -75,7 +99,8 @@ export const createOrderDocument = async orderData => {
         }
 
         await userRef.update({
-          tabs: updatedTabs
+          tabs: updatedTabs,
+          seybrewTab: updatedSeybrewTab
         });
       } catch (error) {}
     }
