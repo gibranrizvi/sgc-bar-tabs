@@ -14,17 +14,19 @@ import {
   createUserProfileDocument
 } from '../../firebase/firebase';
 
+const INITIAL_STATE = {
+  displayName: '',
+  role: 'customer', // TODO Hard-coded for now
+  telephone: '',
+  email: '',
+  password: '',
+  confirmPassword: ''
+};
+
 const RegisterFormModal = ({ currentUser }) => {
   const [modalOpen, setModalOpen] = React.useState(false);
   const [submitting, setSubmitting] = React.useState(false);
-  const [values, setValues] = React.useState({
-    displayName: '',
-    role: 'customer', // TODO Hard-coded for now
-    telephone: '',
-    email: '',
-    password: '',
-    confirmPassword: ''
-  });
+  const [values, setValues] = React.useState(INITIAL_STATE);
   const [errors, setErrors] = React.useState({});
 
   const {
@@ -36,7 +38,10 @@ const RegisterFormModal = ({ currentUser }) => {
     confirmPassword
   } = values;
 
-  const toggle = () => setModalOpen(prev => !prev);
+  const toggle = () => {
+    setErrors({});
+    return setModalOpen(prev => !prev);
+  };
 
   const handleSubmit = async event => {
     event.preventDefault();
@@ -114,13 +119,7 @@ const RegisterFormModal = ({ currentUser }) => {
       await createUserProfileDocument(userData);
 
       setSubmitting(false);
-      setValues({
-        displayName: '',
-        telephone: '',
-        email: '',
-        password: '',
-        confirmPassword: ''
-      });
+      setValues(INITIAL_STATE);
       return toggle();
     } catch (error) {
       console.log(error);

@@ -8,6 +8,50 @@ import { firebaseConfig } from '../config/config';
 
 const secondaryApp = firebase.initializeApp(firebaseConfig, 'Secondary');
 
+export const addSeybrews = async data => {
+  const { customer, seybrewsToAdd } = data;
+
+  if (seybrewsToAdd === 0) {
+    return;
+  }
+
+  const { id, seybrewTab } = customer;
+
+  const userRef = firestore.doc(`users/${id}`);
+
+  const snapshot = await userRef.get();
+
+  if (snapshot.exists) {
+    const createdAt = new Date();
+
+    const updatedSeybrewCount = seybrewTab.count + seybrewsToAdd;
+    const seybrewTabOrders = [
+      ...seybrewTab.orders,
+      {
+        type: 'addition',
+        amount: seybrewsToAdd,
+        total: updatedSeybrewCount,
+        date: createdAt
+      }
+    ];
+
+    const updatedSeybrewTab = {
+      count: updatedSeybrewCount,
+      orders: seybrewTabOrders
+    };
+
+    try {
+      await userRef.update({
+        seybrewTab: updatedSeybrewTab
+      });
+    } catch (error) {
+      console.log(error);
+    }
+
+    return userRef;
+  }
+};
+
 // Create new order document
 export const createOrderDocument = async orderData => {
   const { customer, order, total, seybrewOrder, createdBy } = orderData;
@@ -28,7 +72,12 @@ export const createOrderDocument = async orderData => {
     const updatedSeybrewCount = seybrewTab.count - seybrewOrder;
     const seybrewTabOrders = [
       ...seybrewTab.orders,
-      { type: 'removal', amount: seybrewOrder, date: createdAt }
+      {
+        type: 'removal',
+        amount: seybrewOrder,
+        total: updatedSeybrewCount,
+        date: createdAt
+      }
     ];
     const updatedSeybrewTab = {
       count: updatedSeybrewCount,
@@ -68,7 +117,7 @@ export const createOrderDocument = async orderData => {
             }
           ],
           hasActiveTab: true,
-          seybrewTab: updatedSeybrewTab
+          seybrewTab: seybrewOrder === 0 ? seybrewTab : updatedSeybrewTab
         });
       } catch (error) {
         console.log(error);
@@ -100,7 +149,7 @@ export const createOrderDocument = async orderData => {
 
         await userRef.update({
           tabs: updatedTabs,
-          seybrewTab: updatedSeybrewTab
+          seybrewTab: seybrewOrder === 0 ? seybrewTab : updatedSeybrewTab
         });
       } catch (error) {}
     }
