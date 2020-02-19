@@ -14,8 +14,8 @@ import {
 import { createOrderDocument, FirebaseContext } from '../../firebase/firebase';
 import beverageList from '../../beverage-list/beverageList';
 
-const NewOrderModal = ({ currentUser }) => {
-  const { customers } = React.useContext(FirebaseContext);
+const NewOrderModal = ({ buttonType, selectedCustomer }) => {
+  const { customers, currentUser } = React.useContext(FirebaseContext);
 
   const [modalOpen, setModalOpen] = React.useState(false);
   const [submitting, setSubmitting] = React.useState(false);
@@ -25,6 +25,12 @@ const NewOrderModal = ({ currentUser }) => {
   const [order, setOrder] = React.useState([]);
   const [total, setTotal] = React.useState(0);
   const [seybrewOrder, setSeybrewOrder] = React.useState(0);
+
+  React.useEffect(() => {
+    if (selectedCustomer) {
+      setCustomer(selectedCustomer);
+    }
+  }, []);
 
   React.useEffect(() => {
     const sum = getTotal();
@@ -254,9 +260,13 @@ const NewOrderModal = ({ currentUser }) => {
 
   return (
     <>
-      <MDBBtn block size="lg" gradient="purple" rounded onClick={toggle}>
-        <MDBIcon icon="plus" className="pr-2" /> New Order
-      </MDBBtn>
+      {buttonType === 'icon' ? (
+        <MDBIcon className="pointer mr-2" icon="plus" onClick={toggle} />
+      ) : (
+        <MDBBtn block size="lg" gradient="purple" rounded onClick={toggle}>
+          <MDBIcon icon="plus" className="pr-2" /> New Order
+        </MDBBtn>
+      )}
       <MDBModal isOpen={modalOpen} toggle={toggle} fullHeight position="right">
         <form onSubmit={handleSubmit} noValidate>
           <MDBModalHeader toggle={toggle}>Create New Order</MDBModalHeader>

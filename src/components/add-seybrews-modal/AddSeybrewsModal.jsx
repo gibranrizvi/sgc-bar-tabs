@@ -12,8 +12,8 @@ import {
 
 import { addSeybrews, FirebaseContext } from '../../firebase/firebase';
 
-const AddSeybrewsModal = ({ currentUser }) => {
-  const { customers } = React.useContext(FirebaseContext);
+const AddSeybrewsModal = ({ buttonType, selectedCustomer }) => {
+  const { customers, currentUser } = React.useContext(FirebaseContext);
 
   const [modalOpen, setModalOpen] = React.useState(false);
   const [submitting, setSubmitting] = React.useState(false);
@@ -26,6 +26,12 @@ const AddSeybrewsModal = ({ currentUser }) => {
     setError('');
     return setModalOpen(prev => !prev);
   };
+
+  React.useState(() => {
+    if (selectedCustomer) {
+      setCustomer(selectedCustomer);
+    }
+  }, []);
 
   const handleSubmit = async event => {
     event.preventDefault();
@@ -103,10 +109,14 @@ const AddSeybrewsModal = ({ currentUser }) => {
 
   return (
     <>
-      <MDBBtn block size="lg" gradient="blue" rounded onClick={toggle}>
-        <MDBIcon icon="beer" className="pr-2" /> Add Seybrews
-      </MDBBtn>
-      <MDBModal isOpen={modalOpen} toggle={toggle} fullHeight position="right">
+      {buttonType === 'icon' ? (
+        <MDBIcon className="pointer" icon="plus" onClick={toggle} />
+      ) : (
+        <MDBBtn block size="lg" gradient="blue" rounded onClick={toggle}>
+          <MDBIcon icon="beer" className="pr-2" /> Add Seybrews
+        </MDBBtn>
+      )}
+      <MDBModal isOpen={modalOpen} toggle={toggle} fullHeight position="left">
         <form onSubmit={handleSubmit} noValidate>
           <MDBModalHeader toggle={toggle}>Add Seybrews</MDBModalHeader>
           <MDBModalBody>

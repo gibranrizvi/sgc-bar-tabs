@@ -1,6 +1,8 @@
 import React from 'react';
 import { MDBTable, MDBTableBody, MDBTableHead } from 'mdbreact';
 
+import AddSeybrewsModal from '../add-seybrews-modal/AddSeybrewsModal';
+
 import FirebaseContext from '../../firebase/context';
 
 const SeybrewTabsTable = ({ history }) => {
@@ -12,14 +14,14 @@ const SeybrewTabsTable = ({ history }) => {
     const { count } = seybrewTab;
 
     return (
-      <tr
-        onClick={() => history.push(`/customer/${customer.handle}`)}
-        className="pointer"
-        key={id}
-      >
-        <td>{displayName}</td>
+      <tr className="pointer" key={id}>
+        <td onClick={() => history.push(`/customer/${customer.handle}`)}>
+          {displayName}
+        </td>
         <td>{count}</td>
-        <td>Add Seybrews</td>
+        <td>
+          <AddSeybrewsModal buttonType="icon" selectedCustomer={customer} />
+        </td>
       </tr>
     );
   };

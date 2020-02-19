@@ -1,9 +1,10 @@
 import React from 'react';
-import { MDBTable, MDBTableBody, MDBTableHead } from 'mdbreact';
-
+import { MDBTable, MDBTableBody, MDBTableHead, MDBIcon } from 'mdbreact';
 import { format } from 'date-fns';
 
 import FirebaseContext from '../../firebase/context';
+
+import NewOrderModal from '../new-order-modal/NewOrderModal';
 
 const ActiveTabsTable = ({ history }) => {
   const { customers } = React.useContext(FirebaseContext);
@@ -17,16 +18,22 @@ const ActiveTabsTable = ({ history }) => {
     const dueDate = format(activeTab.dueDate.toDate(), 'dd/MM/yyyy');
 
     return (
-      <tr
-        onClick={() => history.push(`/customer/${customer.handle}`)}
-        className="pointer"
-        key={id}
-      >
-        <td>{displayName}</td>
+      <tr className="pointer" key={id}>
+        <td onClick={() => history.push(`/customer/${customer.handle}`)}>
+          {displayName}
+        </td>
         <td>SR {activeTab.tabAmount}.00</td>
         <td>{startDate}</td>
         <td>{dueDate}</td>
-        <td>Send SMS - Close Tab</td>
+        <td>
+          <NewOrderModal buttonType="icon" selectedCustomer={customer} />
+          <MDBIcon
+            className="pointer mr-2"
+            icon="mobile-alt"
+            onClick={() => console.log(`Send SMS to ${displayName}`)}
+          />
+          <MDBIcon className="pointer" icon="times" onClick={() => {}} />
+        </td>
       </tr>
     );
   };
