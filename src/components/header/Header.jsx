@@ -75,14 +75,6 @@ const Header = ({ history, currentUser }) => {
                       <MDBDropdownMenu className="dropdown-default">
                         <MDBDropdownItem>
                           <MDBLink
-                            to="/change-password"
-                            style={dropdownItemStyles}
-                          >
-                            Change Password
-                          </MDBLink>
-                        </MDBDropdownItem>
-                        <MDBDropdownItem>
-                          <MDBLink
                             to="#"
                             onClick={() => auth.signOut()}
                             style={dropdownItemStyles}

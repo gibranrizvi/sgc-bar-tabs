@@ -254,7 +254,7 @@ const NewOrderModal = ({ currentUser }) => {
 
   return (
     <>
-      <MDBBtn block size="lg" gradient="peach" rounded onClick={toggle}>
+      <MDBBtn block size="lg" gradient="purple" rounded onClick={toggle}>
         <MDBIcon icon="user" className="pr-2" /> New Order
       </MDBBtn>
       <MDBModal isOpen={modalOpen} toggle={toggle} fullHeight position="right">
