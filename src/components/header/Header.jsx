@@ -50,11 +50,8 @@ const Header = ({ history, currentUser }) => {
                     <MDBNavItem active={currentTab === '/'}>
                       <MDBNavLink to="/">Summary</MDBNavLink>
                     </MDBNavItem>
-                    <MDBNavItem active={currentTab === '/active'}>
-                      <MDBNavLink to="/active">Active</MDBNavLink>
-                    </MDBNavItem>
-                    <MDBNavItem active={currentTab === '/seybrew'}>
-                      <MDBNavLink to="/seybrew">Seybrew</MDBNavLink>
+                    <MDBNavItem active={currentTab === '/customers'}>
+                      <MDBNavLink to="/customers">Customers</MDBNavLink>
                     </MDBNavItem>
                   </MDBNavbarNav>
                 ) : (

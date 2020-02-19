@@ -8,6 +8,7 @@ import ActiveTabsTable from '../../components/active-tabs-table/ActiveTabsTable'
 import SeybrewTabsTable from '../../components/seybrew-tabs-table/SeybrewTabsTable';
 import RegisterFormModal from '../../components/register-form-modal/RegisterFormModal';
 import NewOrderModal from '../../components/new-order-modal/NewOrderModal';
+import AddSeybrewsModal from '../../components/add-seybrews-modal/AddSeybrewsModal';
 
 const SummaryPage = ({ history }) => {
   const { currentUser } = React.useContext(FirebaseContext);
@@ -27,15 +28,7 @@ const SummaryPage = ({ history }) => {
             <NewOrderModal currentUser={currentUser} />
           </MDBCol>
           <MDBCol md="4" className="mb-2">
-            <MDBBtn
-              block
-              size="lg"
-              gradient="blue"
-              rounded
-              onClick={() => history.push('/add-seybrews')}
-            >
-              <MDBIcon icon="beer" className="pr-2" /> Add Seybrews
-            </MDBBtn>
+            <AddSeybrewsModal currentUser={currentUser} />
           </MDBCol>
           <MDBCol md="4" className="mb-2">
             <RegisterFormModal currentUser={currentUser} />
@@ -43,8 +36,7 @@ const SummaryPage = ({ history }) => {
         </MDBRow>
 
         <MDBRow>
-          <MDBCol md="6" className="my-2">
-            {/* Recent orders table */}
+          {/*<MDBCol md="6" className="my-2">
             <div>
               <h5>Recent orders</h5>
               <Link to="#">View More</Link>
@@ -52,27 +44,26 @@ const SummaryPage = ({ history }) => {
             </div>
           </MDBCol>
           <MDBCol md="6" className="my-2">
-            {/* Overdue tabs table */}
             <div>
               <h5>Overdue tabs</h5>
               <Link to="/active">View All</Link>
               <ActiveTabsTable />
+            </div>
+          </MDBCol>*/}
+          <MDBCol md="6" className="my-2">
+            {/* Active tabs table */}
+            <div>
+              <h5>Active tabs</h5>
+              <Link to="/customers">View All</Link>
+              <ActiveTabsTable history={history} />
             </div>
           </MDBCol>
           <MDBCol md="6" className="my-2">
             {/* Seybrew tabs table */}
             <div>
               <h5>Seybrew tabs</h5>
-              <Link to="/seybrew">View All</Link>
-              <SeybrewTabsTable />
-            </div>
-          </MDBCol>
-          <MDBCol md="6" className="my-2">
-            {/* Active tabs table */}
-            <div>
-              <h5>Active tabs</h5>
-              <Link to="/active">View All</Link>
-              <ActiveTabsTable />
+              <Link to="/customers">View All</Link>
+              <SeybrewTabsTable history={history} />
             </div>
           </MDBCol>
         </MDBRow>

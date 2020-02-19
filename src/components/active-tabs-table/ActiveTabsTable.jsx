@@ -5,7 +5,7 @@ import { format } from 'date-fns';
 
 import FirebaseContext from '../../firebase/context';
 
-const ActiveTabsTable = () => {
+const ActiveTabsTable = ({ history }) => {
   const { customers } = React.useContext(FirebaseContext);
 
   const renderTableRow = customer => {
@@ -18,7 +18,7 @@ const ActiveTabsTable = () => {
 
     return (
       <tr
-        onClick={() => console.log('Do something')}
+        onClick={() => history.push(`/customer/${customer.handle}`)}
         className="pointer"
         key={id}
       >
@@ -26,7 +26,7 @@ const ActiveTabsTable = () => {
         <td>SR {activeTab.tabAmount}.00</td>
         <td>{startDate}</td>
         <td>{dueDate}</td>
-        <td>View</td>
+        <td>Send SMS - Close Tab</td>
       </tr>
     );
   };
@@ -38,8 +38,8 @@ const ActiveTabsTable = () => {
           <tr>
             <th>Name</th>
             <th>Amount</th>
-            <th>Start</th>
-            <th>Due</th>
+            <th>Start Date</th>
+            <th>Due Date</th>
             <th>Actions</th>
           </tr>
         </MDBTableHead>

@@ -11,8 +11,8 @@ import Header from './components/header/Header';
 import Footer from './components/footer/Footer';
 import SignInPage from './pages/sign-in/SignInPage';
 import SummaryPage from './pages/summary/SummaryPage';
-import ActivePage from './pages/active/ActivePage';
-import SeybrewPage from './pages/seybrew/SeybrewPage';
+import CustomersPage from './pages/customers/CustomersPage';
+import CustomerPage from './pages/customer/CustomerPage';
 
 const App = () => {
   const currentUser = useAuth();
@@ -32,8 +32,8 @@ const App = () => {
           <Switch>
             <Route exact path="/" component={SummaryPage} />
             <Route exact path="/sign-in" component={SignInPage} />
-            <Route exact path="/active" component={ActivePage} />
-            <Route exact path="/seybrew" component={SeybrewPage} />
+            <Route exact path="/customers" component={CustomersPage} />
+            <Route exact path="/customer/:handle" component={CustomerPage} />
           </Switch>
           <Footer />
         </Router>

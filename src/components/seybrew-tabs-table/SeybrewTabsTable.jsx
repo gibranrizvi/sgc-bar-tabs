@@ -1,7 +1,29 @@
 import React from 'react';
 import { MDBTable, MDBTableBody, MDBTableHead } from 'mdbreact';
 
-const SeybrewTabsTable = () => {
+import FirebaseContext from '../../firebase/context';
+
+const SeybrewTabsTable = ({ history }) => {
+  const { customers } = React.useContext(FirebaseContext);
+
+  const renderTableRow = customer => {
+    const { id, displayName, seybrewTab } = customer;
+
+    const { count } = seybrewTab;
+
+    return (
+      <tr
+        onClick={() => history.push(`/customer/${customer.handle}`)}
+        className="pointer"
+        key={id}
+      >
+        <td>{displayName}</td>
+        <td>{count}</td>
+        <td>Add Seybrews</td>
+      </tr>
+    );
+  };
+
   return (
     <div className="recent-orders-table mt-3">
       <MDBTable small hover responsive striped fixed>
@@ -13,21 +35,10 @@ const SeybrewTabsTable = () => {
           </tr>
         </MDBTableHead>
         <MDBTableBody>
-          <tr onClick={() => console.log('Do something')} className="pointer">
-            <td>1</td>
-            <td>Mark</td>
-            <td>@mdo</td>
-          </tr>
-          <tr>
-            <td>2</td>
-            <td>Jacob</td>
-            <td>@fat</td>
-          </tr>
-          <tr>
-            <td>3</td>
-            <td>Larry</td>
-            <td>@twitter</td>
-          </tr>
+          {customers &&
+            customers
+              .sort((a, b) => b.seybrewTab.count - a.seybrewTab.count)
+              .map(customer => renderTableRow(customer))}
         </MDBTableBody>
       </MDBTable>
     </div>
