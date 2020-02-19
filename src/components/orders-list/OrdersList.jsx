@@ -4,7 +4,7 @@ import { format } from 'date-fns';
 import ItemsList from '../items-list/ItemsList';
 
 const OrdersList = ({ orders }) => {
-  const [showAll, setShowAll] = React.useState('false');
+  const [showingAll, setShowingAll] = React.useState(false);
 
   const renderList = () =>
     orders.map((order, index) => (
@@ -19,7 +19,13 @@ const OrdersList = ({ orders }) => {
 
   return (
     <div className="text-left">
-      <ul>{renderList()}</ul>
+      <p
+        className="text-muted pointer mb-1"
+        onClick={() => setShowingAll(prev => !prev)}
+      >
+        {showingAll ? 'Hide' : 'Show'}
+      </p>
+      <ul>{showingAll && renderList()}</ul>
     </div>
   );
 };

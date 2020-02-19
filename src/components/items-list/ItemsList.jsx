@@ -1,8 +1,6 @@
 import React from 'react';
 
 const ItemsList = ({ items }) => {
-  const [showAll, setShowAll] = React.useState('false');
-
   const renderList = () =>
     items.map(item => (
       <li key={item.id} className="mb-1">

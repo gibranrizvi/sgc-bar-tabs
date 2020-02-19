@@ -71,7 +71,7 @@ const CustomerDetailPage = ({ history, match }) => {
           <hr />
 
           <div className="d-flex justify-content-between align-items-center">
-            <h4>Orders</h4>
+            <h5>Orders ({activeTab.orders.length})</h5>
             <NewOrderModal selectedCustomer={customer} buttonType="icon" />
           </div>
           <OrdersList orders={activeTab.orders} />
@@ -115,6 +115,9 @@ const CustomerDetailPage = ({ history, match }) => {
           </p>
           <hr />
 
+          <div className="d-flex justify-content-between align-items-center">
+            <h5>Orders ({tab.orders.length})</h5>
+          </div>
           <OrdersList orders={tab.orders} />
         </MDBCardBody>
       </MDBCard>

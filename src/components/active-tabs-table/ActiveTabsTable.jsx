@@ -31,11 +31,11 @@ const ActiveTabsTable = ({ history }) => {
         <td>{dueDate}</td>
         <td>
           <NewOrderModal buttonType="icon" selectedCustomer={customer} />
-          <MDBIcon
+          {/*<MDBIcon
             className="pointer mr-2"
             icon="mobile-alt"
             onClick={() => console.log(`Send SMS to ${displayName}`)}
-          />
+          />*/}
           <CloseTabModal
             buttonType="icon"
             selectedCustomer={customer}
