@@ -181,13 +181,8 @@ const NewOrderModal = ({ currentUser }) => {
     return setOrder(updatedOrder);
   };
 
-  const getAvailableBeverages = () => {
-    const availableBeverages = beverageList.filter(
-      ({ id }) => !order.some(item => id === item.id)
-    );
-    console.log(availableBeverages);
-    return availableBeverages;
-  };
+  const getAvailableBeverages = () =>
+    beverageList.filter(({ id }) => !order.some(item => id === item.id));
 
   const getTotal = () => {
     let sum = 0;
