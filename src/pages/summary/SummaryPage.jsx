@@ -1,6 +1,7 @@
 import React from 'react';
 import { MDBContainer, MDBRow, MDBCol } from 'mdbreact';
 import { Link } from 'react-router-dom';
+import { format } from 'date-fns';
 
 import FirebaseContext from '../../firebase/context';
 import ActiveTabsTable from '../../components/active-tabs-table/ActiveTabsTable';
@@ -18,10 +19,22 @@ const SummaryPage = ({ history }) => {
     }
   }, [currentUser, history]);
 
+  const currentHour = Number(format(new Date(), 'H'));
+
+  const renderGreeting = () => {
+    const name = currentUser.displayName.split(' ')[0];
+    if (currentHour >= 4 && currentHour < 12)
+      return <h2>Good Morning, {name}</h2>;
+    else if (currentHour >= 12 && currentHour < 6)
+      return <h2>Good Afternoon, {name}</h2>;
+    return <h2>Good Evening, {name}</h2>;
+  };
+
   return (
     <div className="Summary">
-      <MDBContainer className="text-center mt-5 pt-5">
-        <h2>Summary</h2>
+      <MDBContainer className="text-left mt-5 pt-5">
+        <h5>Summary</h5>
+        {currentUser && renderGreeting()}
         <MDBRow className="mt-5 mb-3 text-center">
           <MDBCol md="4" className="mb-2">
             <NewOrderModal currentUser={currentUser} />
@@ -34,7 +47,7 @@ const SummaryPage = ({ history }) => {
           </MDBCol>
         </MDBRow>
 
-        <MDBRow>
+        <MDBRow className="text-center">
           {/*<MDBCol md="6" className="my-2">
             <div>
               <h5>Recent orders</h5>

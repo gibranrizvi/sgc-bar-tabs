@@ -1,5 +1,6 @@
 import React from 'react';
 import { MDBTable, MDBTableBody, MDBTableHead } from 'mdbreact';
+import { Link } from 'react-router-dom';
 
 import AddSeybrewsModal from '../add-seybrews-modal/AddSeybrewsModal';
 
@@ -15,11 +16,10 @@ const SeybrewTabsTable = ({ history }) => {
 
     return (
       <tr key={id}>
-        <td
-          onClick={() => history.push(`/customer/${customer.handle}`)}
-          className="pointer"
-        >
-          {displayName}
+        <td>
+          <Link to={`/customer/${customer.handle}`}>
+            <strong>{displayName}</strong>
+          </Link>{' '}
         </td>
         <td>{count}</td>
         <td>

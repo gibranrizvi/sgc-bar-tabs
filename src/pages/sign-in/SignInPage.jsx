@@ -12,8 +12,6 @@ const SignInPage = ({ history }) => {
     if (currentUser) {
       history.push('/');
     } else {
-      // TODO uncomment this
-      history.push('/sign-in');
     }
   }, [currentUser, history]);
 

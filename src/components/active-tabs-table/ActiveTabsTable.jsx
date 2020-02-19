@@ -1,6 +1,7 @@
 import React from 'react';
 import { MDBTable, MDBTableBody, MDBTableHead } from 'mdbreact';
 import { format } from 'date-fns';
+import { Link } from 'react-router-dom';
 
 import { FirebaseContext } from '../../firebase/firebase';
 
@@ -20,11 +21,10 @@ const ActiveTabsTable = ({ history }) => {
 
     return (
       <tr key={id}>
-        <td
-          onClick={() => history.push(`/customer/${customer.handle}`)}
-          className="pointer"
-        >
-          {displayName}
+        <td>
+          <Link to={`/customer/${customer.handle}`}>
+            <strong>{displayName}</strong>
+          </Link>
         </td>
         <td>SR {activeTab.tabAmount}.00</td>
         <td>{startDate}</td>
