@@ -34,6 +34,7 @@ const SummaryPage = ({ history }) => {
     <div className="Summary">
       <MDBContainer className="text-left mt-5 pt-5">
         <h5>Summary</h5>
+        <h5>{format(new Date(), 'do MMMM yyyy')}</h5>
         {currentUser && renderGreeting()}
         <MDBRow className="mt-5 mb-3 text-center">
           <MDBCol md="4" className="mb-2">
