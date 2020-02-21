@@ -95,6 +95,12 @@ const CustomerDetailPage = ({ history, match }) => {
             Closed - SR {tab.tabAmount}.00
           </h4>
 
+          <p className="text-left">
+            Settled on:{' '}
+            <strong className="text-muted">
+              {format(tab.closedAt.toDate(), 'do MMMM, yyyy')}
+            </strong>
+          </p>
           <p className="text-left mb-1">
             Start date:{' '}
             <strong className="text-muted">
@@ -105,12 +111,6 @@ const CustomerDetailPage = ({ history, match }) => {
             Due date:{' '}
             <strong className="text-muted">
               {format(tab.dueDate.toDate(), 'do MMMM, yyyy')}
-            </strong>
-          </p>
-          <p className="text-left">
-            Settled on:{' '}
-            <strong className="text-muted">
-              {format(tab.closedAt.toDate(), 'do MMMM, yyyy')}
             </strong>
           </p>
           <hr />

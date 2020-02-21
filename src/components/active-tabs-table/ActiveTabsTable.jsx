@@ -14,7 +14,7 @@ const ActiveTabsTable = ({ history }) => {
   const renderTableRow = customer => {
     const { id, displayName, tabs } = customer;
 
-    const activeTab = tabs[tabs.length - 1];
+    const activeTab = tabs[0];
 
     const startDate = format(activeTab.startDate.toDate(), 'dd/MM/yyyy');
     const dueDate = format(activeTab.dueDate.toDate(), 'dd/MM/yyyy');
