@@ -10,14 +10,13 @@ const SignInForm = () => {
   const handleSubmit = async event => {
     event.preventDefault();
 
+    // TODO Add form validation
+
     try {
       return await auth.signInWithEmailAndPassword(email, password);
     } catch (error) {
       console.log(error.message);
     }
-
-    setEmail('');
-    setPassword('');
   };
 
   return (
